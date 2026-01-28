@@ -1,0 +1,1269 @@
+{
+  "items": [
+    {
+      "id": "item_a9840",
+      "name": "原矿",
+      "price": 0,
+      "isRawResource": true,
+      "baseProductionRate": 240
+    },
+    {
+      "id": "item_1e35f2d",
+      "name": "紫水晶",
+      "price": 0,
+      "isRawResource": true,
+      "baseProductionRate": 120
+    },
+    {
+      "id": "item_2053cfb",
+      "name": "蓝铁矿",
+      "price": 0,
+      "isRawResource": true,
+      "baseProductionRate": 100
+    },
+    {
+      "id": "item_2fc866fa",
+      "name": "晶体外壳",
+      "price": 1,
+      "isRawResource": false
+    },
+    {
+      "id": "item_5d95b72",
+      "name": "优质荞愈胶囊",
+      "price": 27,
+      "isRawResource": false
+    },
+    {
+      "id": "item_4b98c570",
+      "name": "中容谷地电池",
+      "price": 30,
+      "isRawResource": false
+    },
+    {
+      "id": "item_3d338b7e",
+      "name": "荞愈胶囊",
+      "price": 10,
+      "isRawResource": false
+    },
+    {
+      "id": "item_3098ea91",
+      "name": "柑实罐头",
+      "price": 10,
+      "isRawResource": false
+    },
+    {
+      "id": "item_3a70f96b",
+      "name": "紫晶制瓶",
+      "price": 2,
+      "isRawResource": false
+    },
+    {
+      "id": "item_3a7926ab",
+      "name": "紫晶零件",
+      "price": 1,
+      "isRawResource": false
+    },
+    {
+      "id": "item_2051c53",
+      "name": "蓝铁块",
+      "price": 0,
+      "isRawResource": false
+    },
+    {
+      "id": "item_3a7664bb",
+      "name": "紫晶纤维",
+      "price": 0,
+      "isRawResource": false
+    },
+    {
+      "id": "item_16ba08f",
+      "name": "致密晶体粉末",
+      "price": 0,
+      "isRawResource": false
+    },
+    {
+      "id": "item_3c78036f",
+      "name": "致密晶体",
+      "price": 0,
+      "isRawResource": false
+    },
+    {
+      "id": "item_d6af598",
+      "name": "致密蓝铁粉末",
+      "price": 0,
+      "isRawResource": false
+    },
+    {
+      "id": "item_1256f5",
+      "name": "钢块",
+      "price": 0,
+      "isRawResource": false
+    },
+    {
+      "id": "item_48471728",
+      "name": "高精粉末",
+      "price": 0,
+      "isRawResource": false
+    },
+    {
+      "id": "item_48477036",
+      "name": "高精纤维",
+      "price": 0,
+      "isRawResource": false
+    },
+    {
+      "id": "item_52d2c223",
+      "name": "致密碳粉末",
+      "price": 0,
+      "isRawResource": false
+    },
+    {
+      "id": "item_38f3470b",
+      "name": "稳定碳块",
+      "price": 0,
+      "isRawResource": false
+    },
+    {
+      "id": "item_96389b8",
+      "name": "致密原石粉末",
+      "price": 0,
+      "isRawResource": false
+    },
+    {
+      "id": "item_106b13",
+      "name": "荞花",
+      "price": 0,
+      "isRawResource": false
+    },
+    {
+      "id": "item_ef504",
+      "name": "碳块",
+      "price": 0,
+      "isRawResource": false
+    },
+    {
+      "id": "item_3ea35646",
+      "name": "蓝铁粉末",
+      "price": 0,
+      "isRawResource": false
+    },
+    {
+      "id": "item_3a760bad",
+      "name": "紫晶粉末",
+      "price": 0,
+      "isRawResource": false
+    },
+    {
+      "id": "item_27d4d6f6",
+      "name": "原石粉末",
+      "price": 0,
+      "isRawResource": false
+    },
+    {
+      "id": "item_1d493b5",
+      "name": "碳粉末",
+      "price": 0,
+      "isRawResource": false
+    },
+    {
+      "id": "item_5f5a0c3c",
+      "name": "晶体外壳粉末",
+      "price": 0,
+      "isRawResource": false
+    },
+    {
+      "id": "item_3db16e15",
+      "name": "荞花粉末",
+      "price": 0,
+      "isRawResource": false
+    },
+    {
+      "id": "item_ceded",
+      "name": "柑实",
+      "price": 0,
+      "isRawResource": false
+    },
+    {
+      "id": "item_3098a26f",
+      "name": "柑实粉末",
+      "price": 0,
+      "isRawResource": false
+    },
+    {
+      "id": "item_4361b5c4",
+      "name": "酮化灌木",
+      "price": 0,
+      "isRawResource": false
+    },
+    {
+      "id": "item_e252f7a",
+      "name": "酮化灌木粉末",
+      "price": 0,
+      "isRawResource": false
+    },
+    {
+      "id": "item_edc34",
+      "name": "砂叶",
+      "price": 0,
+      "isRawResource": false
+    },
+    {
+      "id": "item_37d81af6",
+      "name": "砂叶粉末",
+      "price": 0,
+      "isRawResource": false
+    },
+    {
+      "id": "item_45c32187",
+      "name": "铁质零件",
+      "price": 0,
+      "isRawResource": false
+    },
+    {
+      "id": "item_44d7c394",
+      "name": "钢制零件",
+      "price": 0,
+      "isRawResource": false
+    },
+    {
+      "id": "item_484a3226",
+      "name": "高精零件",
+      "price": 0,
+      "isRawResource": false
+    },
+    {
+      "id": "item_20539f2",
+      "name": "蓝铁瓶",
+      "price": 0,
+      "isRawResource": false
+    },
+    {
+      "id": "item_2385da2",
+      "name": "钢制瓶",
+      "price": 0,
+      "isRawResource": false
+    },
+    {
+      "id": "item_484204e6",
+      "name": "高精制瓶",
+      "price": 0,
+      "isRawResource": false
+    },
+    {
+      "id": "item_3db10d76",
+      "name": "荞花种子",
+      "price": 0,
+      "isRawResource": false
+    },
+    {
+      "id": "item_309841d0",
+      "name": "柑实种子",
+      "price": 0,
+      "isRawResource": false
+    },
+    {
+      "id": "item_37d7ba57",
+      "name": "砂叶种子",
+      "price": 0,
+      "isRawResource": false
+    },
+    {
+      "id": "item_4360c944",
+      "name": "酮化树种",
+      "price": 0,
+      "isRawResource": false
+    },
+    {
+      "id": "item_1b68530",
+      "name": "灰芦麦",
+      "price": 0,
+      "isRawResource": false
+    },
+    {
+      "id": "item_6e391453",
+      "name": "灰芦麦种子",
+      "price": 0,
+      "isRawResource": false
+    },
+    {
+      "id": "item_7a86e8c4",
+      "name": "紫晶装备原件",
+      "price": 0,
+      "isRawResource": false
+    },
+    {
+      "id": "item_288bf11d",
+      "name": "蓝铁装备原件",
+      "price": 0,
+      "isRawResource": false
+    },
+    {
+      "id": "item_5843017f",
+      "name": "高精装备原件",
+      "price": 0,
+      "isRawResource": false
+    },
+    {
+      "id": "item_1273fc5f",
+      "name": "优质柑实罐头",
+      "price": 0,
+      "isRawResource": false
+    },
+    {
+      "id": "item_2ce03451",
+      "name": "细磨柑实粉末",
+      "price": 0,
+      "isRawResource": false
+    },
+    {
+      "id": "item_489e7e4",
+      "name": "精选柑实罐头",
+      "price": 0,
+      "isRawResource": false
+    },
+    {
+      "id": "item_39f8fff7",
+      "name": "细磨荞花粉末",
+      "price": 0,
+      "isRawResource": false
+    },
+    {
+      "id": "item_810b909",
+      "name": "精选荞愈胶囊",
+      "price": 0,
+      "isRawResource": false
+    },
+    {
+      "id": "item_505fc842",
+      "name": "工业爆炸物",
+      "price": 0,
+      "isRawResource": false
+    },
+    {
+      "id": "item_5e7039f1",
+      "name": "低容谷地电池",
+      "price": 0,
+      "isRawResource": false
+    },
+    {
+      "id": "item_777cdf3b",
+      "name": "高容谷地电池",
+      "price": 0,
+      "isRawResource": false
+    }
+  ],
+  "machines": [
+    {
+      "id": "machine_1e25c8b",
+      "name": "精炼炉",
+      "description": "Base footprint 3x3",
+      "area": 9
+    },
+    {
+      "id": "machine_1e27eb5",
+      "name": "粉碎机",
+      "description": "Base footprint 3x3",
+      "area": 9
+    },
+    {
+      "id": "machine_22b6911",
+      "name": "配件机",
+      "description": "Base footprint 3x3",
+      "area": 9
+    },
+    {
+      "id": "machine_1579404",
+      "name": "塑性机",
+      "description": "Base footprint 3x3",
+      "area": 9
+    },
+    {
+      "id": "machine_1d65a5a",
+      "name": "种植机",
+      "description": "Base footprint 5x5",
+      "area": 25
+    },
+    {
+      "id": "machine_1db48e0",
+      "name": "种采机",
+      "description": "Base footprint 5x5",
+      "area": 25
+    },
+    {
+      "id": "item_7105fbc7",
+      "name": "装备原件机器",
+      "description": "Base footprint 6x4",
+      "area": 24
+    },
+    {
+      "id": "machine_1b68461",
+      "name": "灌装机",
+      "description": "Base footprint 6x4",
+      "area": 24
+    },
+    {
+      "id": "machine_16a56d6",
+      "name": "封装机",
+      "description": "Base footprint 6x4",
+      "area": 24
+    },
+    {
+      "id": "machine_1d1ce66",
+      "name": "研磨机",
+      "description": "Base footprint 6x4",
+      "area": 24
+    }
+  ],
+  "recipes": [
+    {
+      "id": "recipe_0000",
+      "machineId": "machine_1e25c8b",
+      "name": "蓝铁矿 → 蓝铁块",
+      "outputItemId": "item_2051c53",
+      "outputAmount": 1,
+      "craftingTime": 2,
+      "inputs": [
+        {
+          "itemId": "item_2053cfb",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "recipe_0001",
+      "machineId": "machine_1e25c8b",
+      "name": "紫水晶 → 紫晶纤维",
+      "outputItemId": "item_3a7664bb",
+      "outputAmount": 1,
+      "craftingTime": 2,
+      "inputs": [
+        {
+          "itemId": "item_1e35f2d",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "recipe_0002",
+      "machineId": "machine_1e25c8b",
+      "name": "原矿 → 晶体外壳",
+      "outputItemId": "item_2fc866fa",
+      "outputAmount": 1,
+      "craftingTime": 2,
+      "inputs": [
+        {
+          "itemId": "item_a9840",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "recipe_0003",
+      "machineId": "machine_1e25c8b",
+      "name": "致密晶体粉末 → 致密晶体",
+      "outputItemId": "item_3c78036f",
+      "outputAmount": 1,
+      "craftingTime": 2,
+      "inputs": [
+        {
+          "itemId": "item_16ba08f",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "recipe_0004",
+      "machineId": "machine_1e25c8b",
+      "name": "致密蓝铁粉末 → 钢块",
+      "outputItemId": "item_1256f5",
+      "outputAmount": 1,
+      "craftingTime": 2,
+      "inputs": [
+        {
+          "itemId": "item_d6af598",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "recipe_0005",
+      "machineId": "machine_1e25c8b",
+      "name": "高精粉末 → 高精纤维",
+      "outputItemId": "item_48477036",
+      "outputAmount": 1,
+      "craftingTime": 2,
+      "inputs": [
+        {
+          "itemId": "item_48471728",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "recipe_0006",
+      "machineId": "machine_1e25c8b",
+      "name": "致密碳粉末 → 稳定碳块",
+      "outputItemId": "item_38f3470b",
+      "outputAmount": 1,
+      "craftingTime": 2,
+      "inputs": [
+        {
+          "itemId": "item_52d2c223",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "recipe_0007",
+      "machineId": "machine_1e25c8b",
+      "name": "致密原石粉末 → 致密晶体粉末",
+      "outputItemId": "item_16ba08f",
+      "outputAmount": 1,
+      "craftingTime": 2,
+      "inputs": [
+        {
+          "itemId": "item_96389b8",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "recipe_0008",
+      "machineId": "machine_1e25c8b",
+      "name": "荞花 → 碳块",
+      "outputItemId": "item_ef504",
+      "outputAmount": 1,
+      "craftingTime": 2,
+      "inputs": [
+        {
+          "itemId": "item_106b13",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "recipe_0009",
+      "machineId": "machine_1e27eb5",
+      "name": "蓝铁块 → 蓝铁粉末",
+      "outputItemId": "item_3ea35646",
+      "outputAmount": 1,
+      "craftingTime": 2,
+      "inputs": [
+        {
+          "itemId": "item_2051c53",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "recipe_0010",
+      "machineId": "machine_1e27eb5",
+      "name": "紫晶纤维 → 紫晶粉末",
+      "outputItemId": "item_3a760bad",
+      "outputAmount": 1,
+      "craftingTime": 2,
+      "inputs": [
+        {
+          "itemId": "item_3a7664bb",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "recipe_0011",
+      "machineId": "machine_1e27eb5",
+      "name": "原矿 → 原石粉末",
+      "outputItemId": "item_27d4d6f6",
+      "outputAmount": 1,
+      "craftingTime": 2,
+      "inputs": [
+        {
+          "itemId": "item_a9840",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "recipe_0012",
+      "machineId": "machine_1e27eb5",
+      "name": "碳块 → 碳粉末",
+      "outputItemId": "item_1d493b5",
+      "outputAmount": 1,
+      "craftingTime": 2,
+      "inputs": [
+        {
+          "itemId": "item_ef504",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "recipe_0013",
+      "machineId": "machine_1e27eb5",
+      "name": "晶体外壳 → 晶体外壳粉末",
+      "outputItemId": "item_5f5a0c3c",
+      "outputAmount": 1,
+      "craftingTime": 2,
+      "inputs": [
+        {
+          "itemId": "item_2fc866fa",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "recipe_0014",
+      "machineId": "machine_1e27eb5",
+      "name": "荞花 → 荞花粉末",
+      "outputItemId": "item_3db16e15",
+      "outputAmount": 2,
+      "craftingTime": 2,
+      "inputs": [
+        {
+          "itemId": "item_106b13",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "recipe_0015",
+      "machineId": "machine_1e27eb5",
+      "name": "柑实 → 柑实粉末",
+      "outputItemId": "item_3098a26f",
+      "outputAmount": 2,
+      "craftingTime": 2,
+      "inputs": [
+        {
+          "itemId": "item_ceded",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "recipe_0016",
+      "machineId": "machine_1e27eb5",
+      "name": "酮化灌木 → 酮化灌木粉末",
+      "outputItemId": "item_e252f7a",
+      "outputAmount": 2,
+      "craftingTime": 2,
+      "inputs": [
+        {
+          "itemId": "item_4361b5c4",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "recipe_0017",
+      "machineId": "machine_1e27eb5",
+      "name": "砂叶 → 砂叶粉末",
+      "outputItemId": "item_37d81af6",
+      "outputAmount": 3,
+      "craftingTime": 2,
+      "inputs": [
+        {
+          "itemId": "item_edc34",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "recipe_0018",
+      "machineId": "machine_22b6911",
+      "name": "蓝铁块 → 铁质零件",
+      "outputItemId": "item_45c32187",
+      "outputAmount": 1,
+      "craftingTime": 2,
+      "inputs": [
+        {
+          "itemId": "item_2051c53",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "recipe_0019",
+      "machineId": "machine_22b6911",
+      "name": "紫晶纤维 → 紫晶零件",
+      "outputItemId": "item_3a7926ab",
+      "outputAmount": 1,
+      "craftingTime": 2,
+      "inputs": [
+        {
+          "itemId": "item_3a7664bb",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "recipe_0020",
+      "machineId": "machine_22b6911",
+      "name": "钢块 → 钢制零件",
+      "outputItemId": "item_44d7c394",
+      "outputAmount": 1,
+      "craftingTime": 2,
+      "inputs": [
+        {
+          "itemId": "item_1256f5",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "recipe_0021",
+      "machineId": "machine_22b6911",
+      "name": "高精纤维 → 高精零件",
+      "outputItemId": "item_484a3226",
+      "outputAmount": 1,
+      "craftingTime": 2,
+      "inputs": [
+        {
+          "itemId": "item_48477036",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "recipe_0022",
+      "machineId": "machine_1579404",
+      "name": "蓝铁块 → 蓝铁瓶",
+      "outputItemId": "item_20539f2",
+      "outputAmount": 1,
+      "craftingTime": 2,
+      "inputs": [
+        {
+          "itemId": "item_2051c53",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "recipe_0023",
+      "machineId": "machine_1579404",
+      "name": "紫晶纤维 → 紫晶制瓶",
+      "outputItemId": "item_3a70f96b",
+      "outputAmount": 1,
+      "craftingTime": 2,
+      "inputs": [
+        {
+          "itemId": "item_3a7664bb",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "recipe_0024",
+      "machineId": "machine_1579404",
+      "name": "钢块 → 钢制瓶",
+      "outputItemId": "item_2385da2",
+      "outputAmount": 1,
+      "craftingTime": 2,
+      "inputs": [
+        {
+          "itemId": "item_1256f5",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "recipe_0025",
+      "machineId": "machine_1579404",
+      "name": "高精纤维 → 高精制瓶",
+      "outputItemId": "item_484204e6",
+      "outputAmount": 1,
+      "craftingTime": 2,
+      "inputs": [
+        {
+          "itemId": "item_48477036",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "recipe_0026",
+      "machineId": "machine_1d65a5a",
+      "name": "荞花种子 → 荞花",
+      "outputItemId": "item_106b13",
+      "outputAmount": 1,
+      "craftingTime": 2,
+      "inputs": [
+        {
+          "itemId": "item_3db10d76",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "recipe_0027",
+      "machineId": "machine_1d65a5a",
+      "name": "柑实种子 → 柑实",
+      "outputItemId": "item_ceded",
+      "outputAmount": 1,
+      "craftingTime": 2,
+      "inputs": [
+        {
+          "itemId": "item_309841d0",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "recipe_0028",
+      "machineId": "machine_1d65a5a",
+      "name": "砂叶种子 → 砂叶",
+      "outputItemId": "item_edc34",
+      "outputAmount": 1,
+      "craftingTime": 2,
+      "inputs": [
+        {
+          "itemId": "item_37d7ba57",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "recipe_0029",
+      "machineId": "machine_1d65a5a",
+      "name": "酮化树种 → 酮化灌木",
+      "outputItemId": "item_4361b5c4",
+      "outputAmount": 1,
+      "craftingTime": 2,
+      "inputs": [
+        {
+          "itemId": "item_4360c944",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "recipe_0030",
+      "machineId": "machine_1db48e0",
+      "name": "荞花 → 荞花种子",
+      "outputItemId": "item_3db10d76",
+      "outputAmount": 2,
+      "craftingTime": 2,
+      "inputs": [
+        {
+          "itemId": "item_106b13",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "recipe_0031",
+      "machineId": "machine_1db48e0",
+      "name": "柑实 → 柑实种子",
+      "outputItemId": "item_309841d0",
+      "outputAmount": 2,
+      "craftingTime": 2,
+      "inputs": [
+        {
+          "itemId": "item_ceded",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "recipe_0032",
+      "machineId": "machine_1db48e0",
+      "name": "砂叶 → 砂叶种子",
+      "outputItemId": "item_37d7ba57",
+      "outputAmount": 2,
+      "craftingTime": 2,
+      "inputs": [
+        {
+          "itemId": "item_edc34",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "recipe_0033",
+      "machineId": "machine_1db48e0",
+      "name": "酮化灌木 → 酮化树种",
+      "outputItemId": "item_4360c944",
+      "outputAmount": 2,
+      "craftingTime": 2,
+      "inputs": [
+        {
+          "itemId": "item_4361b5c4",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "recipe_0034",
+      "machineId": "machine_1db48e0",
+      "name": "灰芦麦 → 灰芦麦种子",
+      "outputItemId": "item_6e391453",
+      "outputAmount": 2,
+      "craftingTime": 2,
+      "inputs": [
+        {
+          "itemId": "item_1b68530",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "recipe_0035",
+      "machineId": "item_7105fbc7",
+      "name": "晶体外壳+紫晶纤维 → 紫晶装备原件",
+      "outputItemId": "item_7a86e8c4",
+      "outputAmount": 1,
+      "craftingTime": 10,
+      "inputs": [
+        {
+          "itemId": "item_2fc866fa",
+          "amount": 5
+        },
+        {
+          "itemId": "item_3a7664bb",
+          "amount": 5
+        }
+      ]
+    },
+    {
+      "id": "recipe_0036",
+      "machineId": "item_7105fbc7",
+      "name": "晶体外壳+蓝铁块 → 蓝铁装备原件",
+      "outputItemId": "item_288bf11d",
+      "outputAmount": 1,
+      "craftingTime": 10,
+      "inputs": [
+        {
+          "itemId": "item_2fc866fa",
+          "amount": 5
+        },
+        {
+          "itemId": "item_2051c53",
+          "amount": 5
+        }
+      ]
+    },
+    {
+      "id": "recipe_0037",
+      "machineId": "item_7105fbc7",
+      "name": "致密晶体+高精纤维 → 高精装备原件",
+      "outputItemId": "item_5843017f",
+      "outputAmount": 1,
+      "craftingTime": 10,
+      "inputs": [
+        {
+          "itemId": "item_3c78036f",
+          "amount": 5
+        },
+        {
+          "itemId": "item_48477036",
+          "amount": 5
+        }
+      ]
+    },
+    {
+      "id": "recipe_0038",
+      "machineId": "machine_1b68461",
+      "name": "紫晶制瓶+柑实粉末 → 柑实罐头",
+      "outputItemId": "item_3098ea91",
+      "outputAmount": 1,
+      "craftingTime": 10,
+      "inputs": [
+        {
+          "itemId": "item_3a70f96b",
+          "amount": 5
+        },
+        {
+          "itemId": "item_3098a26f",
+          "amount": 5
+        }
+      ]
+    },
+    {
+      "id": "recipe_0039",
+      "machineId": "machine_1b68461",
+      "name": "紫晶制瓶+荞花粉末 → 荞愈胶囊",
+      "outputItemId": "item_3d338b7e",
+      "outputAmount": 1,
+      "craftingTime": 10,
+      "inputs": [
+        {
+          "itemId": "item_3a70f96b",
+          "amount": 5
+        },
+        {
+          "itemId": "item_3db16e15",
+          "amount": 5
+        }
+      ]
+    },
+    {
+      "id": "recipe_0040",
+      "machineId": "machine_1b68461",
+      "name": "蓝铁瓶+柑实粉末 → 优质柑实罐头",
+      "outputItemId": "item_1273fc5f",
+      "outputAmount": 1,
+      "craftingTime": 10,
+      "inputs": [
+        {
+          "itemId": "item_20539f2",
+          "amount": 10
+        },
+        {
+          "itemId": "item_3098a26f",
+          "amount": 10
+        }
+      ]
+    },
+    {
+      "id": "recipe_0041",
+      "machineId": "machine_1b68461",
+      "name": "钢制瓶+细磨柑实粉末 → 精选柑实罐头",
+      "outputItemId": "item_489e7e4",
+      "outputAmount": 1,
+      "craftingTime": 10,
+      "inputs": [
+        {
+          "itemId": "item_2385da2",
+          "amount": 10
+        },
+        {
+          "itemId": "item_2ce03451",
+          "amount": 10
+        }
+      ]
+    },
+    {
+      "id": "recipe_0042",
+      "machineId": "machine_1b68461",
+      "name": "蓝铁瓶+荞花粉末 → 优质荞愈胶囊",
+      "outputItemId": "item_5d95b72",
+      "outputAmount": 1,
+      "craftingTime": 10,
+      "inputs": [
+        {
+          "itemId": "item_20539f2",
+          "amount": 10
+        },
+        {
+          "itemId": "item_3db16e15",
+          "amount": 10
+        }
+      ]
+    },
+    {
+      "id": "recipe_0043",
+      "machineId": "machine_1b68461",
+      "name": "钢制瓶+细磨荞花粉末 → 精选荞愈胶囊",
+      "outputItemId": "item_810b909",
+      "outputAmount": 1,
+      "craftingTime": 10,
+      "inputs": [
+        {
+          "itemId": "item_2385da2",
+          "amount": 10
+        },
+        {
+          "itemId": "item_39f8fff7",
+          "amount": 10
+        }
+      ]
+    },
+    {
+      "id": "recipe_0044",
+      "machineId": "machine_16a56d6",
+      "name": "紫晶零件+酮化灌木粉末 → 工业爆炸物",
+      "outputItemId": "item_505fc842",
+      "outputAmount": 1,
+      "craftingTime": 10,
+      "inputs": [
+        {
+          "itemId": "item_3a7926ab",
+          "amount": 5
+        },
+        {
+          "itemId": "item_e252f7a",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "recipe_0045",
+      "machineId": "machine_16a56d6",
+      "name": "紫晶零件+原石粉末 → 低容谷地电池",
+      "outputItemId": "item_5e7039f1",
+      "outputAmount": 1,
+      "craftingTime": 10,
+      "inputs": [
+        {
+          "itemId": "item_3a7926ab",
+          "amount": 5
+        },
+        {
+          "itemId": "item_27d4d6f6",
+          "amount": 10
+        }
+      ]
+    },
+    {
+      "id": "recipe_0046",
+      "machineId": "machine_16a56d6",
+      "name": "铁质零件+原石粉末 → 中容谷地电池",
+      "outputItemId": "item_4b98c570",
+      "outputAmount": 1,
+      "craftingTime": 10,
+      "inputs": [
+        {
+          "itemId": "item_45c32187",
+          "amount": 10
+        },
+        {
+          "itemId": "item_27d4d6f6",
+          "amount": 15
+        }
+      ]
+    },
+    {
+      "id": "recipe_0047",
+      "machineId": "machine_16a56d6",
+      "name": "钢制零件+致密原石粉末 → 高容谷地电池",
+      "outputItemId": "item_777cdf3b",
+      "outputAmount": 1,
+      "craftingTime": 10,
+      "inputs": [
+        {
+          "itemId": "item_44d7c394",
+          "amount": 10
+        },
+        {
+          "itemId": "item_96389b8",
+          "amount": 15
+        }
+      ]
+    },
+    {
+      "id": "recipe_0048",
+      "machineId": "machine_1d1ce66",
+      "name": "蓝铁粉末+砂叶粉末 → 致密蓝铁粉末",
+      "outputItemId": "item_d6af598",
+      "outputAmount": 1,
+      "craftingTime": 2,
+      "inputs": [
+        {
+          "itemId": "item_3ea35646",
+          "amount": 2
+        },
+        {
+          "itemId": "item_37d81af6",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "recipe_0049",
+      "machineId": "machine_1d1ce66",
+      "name": "紫晶粉末+砂叶粉末 → 高精粉末",
+      "outputItemId": "item_48471728",
+      "outputAmount": 1,
+      "craftingTime": 2,
+      "inputs": [
+        {
+          "itemId": "item_3a760bad",
+          "amount": 2
+        },
+        {
+          "itemId": "item_37d81af6",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "recipe_0050",
+      "machineId": "machine_1d1ce66",
+      "name": "原石粉末+砂叶粉末 → 致密原石粉末",
+      "outputItemId": "item_96389b8",
+      "outputAmount": 1,
+      "craftingTime": 2,
+      "inputs": [
+        {
+          "itemId": "item_27d4d6f6",
+          "amount": 2
+        },
+        {
+          "itemId": "item_37d81af6",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "recipe_0051",
+      "machineId": "machine_1d1ce66",
+      "name": "碳粉末+砂叶粉末 → 致密碳粉末",
+      "outputItemId": "item_52d2c223",
+      "outputAmount": 1,
+      "craftingTime": 2,
+      "inputs": [
+        {
+          "itemId": "item_1d493b5",
+          "amount": 2
+        },
+        {
+          "itemId": "item_37d81af6",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "recipe_0052",
+      "machineId": "machine_1d1ce66",
+      "name": "晶体外壳粉末+砂叶粉末 → 致密晶体粉末",
+      "outputItemId": "item_16ba08f",
+      "outputAmount": 1,
+      "craftingTime": 2,
+      "inputs": [
+        {
+          "itemId": "item_5f5a0c3c",
+          "amount": 2
+        },
+        {
+          "itemId": "item_37d81af6",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "recipe_0053",
+      "machineId": "machine_1d1ce66",
+      "name": "荞花粉末+砂叶粉末 → 细磨荞花粉末",
+      "outputItemId": "item_39f8fff7",
+      "outputAmount": 1,
+      "craftingTime": 2,
+      "inputs": [
+        {
+          "itemId": "item_3db16e15",
+          "amount": 2
+        },
+        {
+          "itemId": "item_37d81af6",
+          "amount": 1
+        }
+      ]
+    },
+    {
+      "id": "recipe_0054",
+      "machineId": "machine_1d1ce66",
+      "name": "柑实粉末+砂叶粉末 → 细磨柑实粉末",
+      "outputItemId": "item_2ce03451",
+      "outputAmount": 1,
+      "craftingTime": 2,
+      "inputs": [
+        {
+          "itemId": "item_3098a26f",
+          "amount": 2
+        },
+        {
+          "itemId": "item_37d81af6",
+          "amount": 1
+        }
+      ]
+    }
+  ]
+}
