@@ -87,9 +87,9 @@ function App() {
 
   // Sync state from active scenario (lifted from Calculator)
   useEffect(() => {
-    if (activeScenario) {
-      setTargets(activeScenario.data.targets);
-      setConstraints(activeScenario.data.constraints);
+    if (activeScenario && activeScenario.data) {
+      setTargets(activeScenario.data.targets || []);
+      setConstraints(activeScenario.data.constraints || []);
       setOptimizationMode(activeScenario.data.optimizationMode || 'balanced');
       setTransferPenalty(activeScenario.data.transferPenalty ?? 0.5);
       setConsolidationWeight(activeScenario.data.consolidationWeight ?? 0.05);

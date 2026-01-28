@@ -14,28 +14,55 @@ export function useScenarios() {
             const stored = localStorage.getItem(STORAGE_KEY);
             const active = localStorage.getItem(ACTIVE_KEY);
             if (stored) {
-                setScenarios(JSON.parse(stored));
+                try {
+                    setScenarios(JSON.parse(stored));
+                } catch (parseError) {
+                    console.error('Corrupted scenarios data, clearing:', parseError);
+                    localStorage.removeItem(STORAGE_KEY);
+                }
             }
             if (active) {
                 setActiveId(active);
             }
         } catch (e) {
             console.error('Failed to load scenarios', e);
+            try {
+                localStorage.removeItem(STORAGE_KEY);
+                localStorage.removeItem(ACTIVE_KEY);
+            } catch {}
         }
     }, []);
 
     const saveToStorage = useCallback((list: Scenario[], active: string | null) => {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
-        if (active) localStorage.setItem(ACTIVE_KEY, active);
-        else localStorage.removeItem(ACTIVE_KEY);
+        try {
+            const json = JSON.stringify(list);
+            if (json.length > 4 * 1024 * 1024) {
+                console.warn('Scenarios data exceeds 4MB, localStorage may fail');
+            }
+            localStorage.setItem(STORAGE_KEY, json);
+            if (active) localStorage.setItem(ACTIVE_KEY, active);
+            else localStorage.removeItem(ACTIVE_KEY);
+        } catch (e) {
+            console.error('Failed to save scenarios:', e);
+            alert('Storage quota exceeded! Try deleting some scenarios.');
+        }
     }, []);
 
-    const createScenario = useCallback((name: string, data: ScenarioData) => {
+    const createScenario = useCallback((name: string, data?: Partial<ScenarioData>) => {
         const newScenario: Scenario = {
             id: crypto.randomUUID(),
             name,
             lastModified: Date.now(),
-            data,
+            data: {
+                targets: data?.targets || [],
+                constraints: data?.constraints || [],
+                optimizationMode: data?.optimizationMode || 'balanced',
+                transferPenalty: data?.transferPenalty ?? 0.5,
+                consolidationWeight: data?.consolidationWeight ?? 0.05,
+                machineWeight: data?.machineWeight ?? 0.01,
+                timeLimit: data?.timeLimit ?? 30,
+                nodePositions: data?.nodePositions || {},
+            },
         };
         setScenarios(prev => {
             const next = [...prev, newScenario];
@@ -145,7 +172,7 @@ export function useScenarios() {
     return {
         scenarios,
         activeId,
-        activeScenario: scenarios.find(s => s.id === activeId),
+        activeScenario: scenarios.find(s => s.id === activeId) || null,
         createScenario,
         updateScenario,
         deleteScenario,

@@ -99,7 +99,7 @@ import { ErrorBoundary } from './ErrorBoundary';
   const [selectedZoneId, setSelectedZoneId] = useState<string | 'config'>('config');
 
   // Helpers
-  const lastSavedData = activeScenario ? JSON.stringify(activeScenario.data) : null;
+  const lastSavedData = activeScenario && activeScenario.data ? JSON.stringify(activeScenario.data) : null;
   const currentDataStr = JSON.stringify({
     targets,
     constraints,
@@ -109,7 +109,7 @@ import { ErrorBoundary } from './ErrorBoundary';
     machineWeight,
     nodePositions
   });
-  const hasUnsavedChanges = activeScenario && lastSavedData !== currentDataStr;
+  const hasUnsavedChanges = activeScenario && activeScenario.data && lastSavedData !== currentDataStr;
 
   const rawResources = items.filter(i => i.isRawResource);
   const craftedItems = items.filter(i => !i.isRawResource);
@@ -269,23 +269,39 @@ import { ErrorBoundary } from './ErrorBoundary';
         }
       } else {
         console.log('Using WASM solver worker...');
-        const worker = new Worker(new URL('../workers/solverWorker.ts', import.meta.url), { type: 'module' });
+        let worker: Worker;
+        try {
+          worker = new Worker(new URL('../workers/solverWorker.ts', import.meta.url), { type: 'module' });
+        } catch (e) {
+          console.error('Failed to create worker:', e);
+          setError('Failed to load solver worker. Please reload the page.');
+          if (onCalculationComplete) onCalculationComplete({ feasible: false } as any);
+          return;
+        }
 
 
         const res = await new Promise<{ result: CalculatorResult; theoreticalMax: number }>((resolve, reject) => {
+          let resolved = false;
           const onMessage = (e: MessageEvent) => {
-            const msg = e.data;
-            if (!msg || typeof msg.type !== 'string') return;
-            if (msg.type === 'solveProgress' && onCalculationProgress) {
-              onCalculationProgress(msg.payload as OptimizerEvent);
-            }
-            if (msg.type === 'solveAllResult') {
-              worker.removeEventListener('message', onMessage);
-              resolve(msg.payload as { result: CalculatorResult; theoreticalMax: number });
-            }
-            if (msg.type === 'error') {
-              worker.removeEventListener('message', onMessage);
-              reject(new Error(String(msg.payload)));
+            if (resolved) return;
+            try {
+              const msg = e.data;
+              if (!msg || typeof msg.type !== 'string') return;
+              if (msg.type === 'solveProgress' && onCalculationProgress) {
+                onCalculationProgress(msg.payload as OptimizerEvent);
+              }
+              if (msg.type === 'solveAllResult') {
+                resolved = true;
+                worker.removeEventListener('message', onMessage);
+                resolve(msg.payload as { result: CalculatorResult; theoreticalMax: number });
+              }
+              if (msg.type === 'error') {
+                resolved = true;
+                worker.removeEventListener('message', onMessage);
+                reject(new Error(String(msg.payload)));
+              }
+            } catch (err) {
+              console.error('Error in worker message handler:', err);
             }
           };
           worker.addEventListener('message', onMessage);
@@ -300,7 +316,11 @@ import { ErrorBoundary } from './ErrorBoundary';
               machineAreas,
             },
           });
-        }).finally(() => worker.terminate());
+        }).finally(() => {
+          if (worker && typeof worker.terminate === 'function') {
+            try { worker.terminate(); } catch (e) { /* ignore */ }
+          }
+        });
         calcResult = res.result;
       }
 
@@ -395,7 +415,16 @@ import { ErrorBoundary } from './ErrorBoundary';
                   activeId={activeId}
                   activeScenario={activeScenario}
                   hasUnsavedChanges={hasUnsavedChanges}
-                  onNew={createScenario}
+                  onNew={(name) => createScenario(name, {
+                    targets,
+                    constraints,
+                    optimizationMode,
+                    transferPenalty,
+                    consolidationWeight,
+                    machineWeight,
+                    timeLimit,
+                    nodePositions
+                  })}
                   onSave={() => {
                     if (activeId) {
                       updateScenario(activeId, {
@@ -503,7 +532,7 @@ import { ErrorBoundary } from './ErrorBoundary';
         </div>
 
         {result && (
-          <div className="zone-statistics-wrapper">
+          <div className="zone-statistics-wrapper has-result">
             <ZoneStatisticsPanel
               zoneResult={result.zoneResults.find(zr => zr.zone.id === selectedZoneId) || null}
               fullResult={result}
