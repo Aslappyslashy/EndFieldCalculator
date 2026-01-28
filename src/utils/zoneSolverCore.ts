@@ -1,7 +1,9 @@
 import Solver, { type Model } from 'javascript-lp-solver';
 import type {
   Item,
+  Machine,
   Recipe,
+
   ZoneAssignment,
   CalculatorInput,
   CalculatorResult,
@@ -28,9 +30,11 @@ export function getInputRatePerMinute(recipe: Recipe, inputItemId: string): numb
 type CoreData = {
   items: Item[];
   recipes: Recipe[];
+  machines: Machine[]; // Added machines
   rawResources: Item[];
   machineAreaById?: Map<string, number | undefined>;
 };
+
 
 // Detect cycles in the recipe graph (e.g., seed -> plant -> more seeds)
 // Returns warnings for any detected amplification loops
@@ -647,6 +651,7 @@ export function calculateZoneOptimalProductionCore(params: {
   const zoneResults: ZoneResult[] = [];
   let totalOutputPortsUsed = 0;
   let transferOverhead = 0;
+  let globalTotalElectricity = 0;
 
   for (const zone of zones) {
     const assignments: ZoneAssignment[] = [];
@@ -654,6 +659,7 @@ export function calculateZoneOptimalProductionCore(params: {
     const itemsToPool: { itemId: string; rate: number }[] = [];
     const itemsSold: { itemId: string; rate: number }[] = [];
     let totalMachines = 0; let areaUsed = 0;
+    let totalElectricity = 0;
 
     for (const recipe of recipes) {
       const varName = `r_${recipe.id}_z_${zone.id}`;
@@ -667,7 +673,15 @@ export function calculateZoneOptimalProductionCore(params: {
       totalMachines += m;
       const a = data.machineAreaById?.get(recipe.machineId);
       if (typeof a === 'number' && a > 0) areaUsed += m * a;
+      
+      const machineDef = data.machines.find(mach => mach.id === recipe.machineId);
+      if (machineDef?.electricity) {
+          totalElectricity += m * machineDef.electricity;
+      }
     }
+    // ... rest of the loop
+
+
 
     for (const item of items) {
       const tName = `transfer_${item.id}_to_${zone.id}`;
@@ -707,8 +721,10 @@ export function calculateZoneOptimalProductionCore(params: {
       inputLinesUsed = itemsFromPool.reduce((sum, f) => sum + Math.ceil(f.rate / zone.portThroughput), 0);
     }
     totalOutputPortsUsed += outputLinesUsed;
-    zoneResults.push({ zone, assignments, outputPortsUsed: outputLinesUsed, inputPortsUsed: inputLinesUsed, totalMachines, itemsFromPool, itemsToPool, itemsSold, areaUsed: zone.areaLimit ? areaUsed : undefined });
+    zoneResults.push({ zone, assignments, outputPortsUsed: outputLinesUsed, inputPortsUsed: inputLinesUsed, totalMachines, totalElectricity, itemsFromPool, itemsToPool, itemsSold, areaUsed: zone.areaLimit ? areaUsed : undefined });
+    globalTotalElectricity += totalElectricity;
   }
+
 
   for (const item of items) {
     if (rawResourceIds.has(item.id)) continue;
@@ -778,8 +794,9 @@ export function calculateZoneOptimalProductionCore(params: {
     feasible,
     solverFeasible,
     infeasibleReason: feasible ? undefined : (solverFeasible ? 'unmet_targets' : 'solver_infeasible'),
-    zoneResults, totalIncome, totalOutputPortsUsed, globalResourceUsage, itemFlows, unmetTargets, warnings, transferOverhead,
+    zoneResults, totalIncome, totalElectricity: globalTotalElectricity, totalOutputPortsUsed, globalResourceUsage, itemFlows, unmetTargets, warnings, transferOverhead,
     telemetry: {
+
       startTime, endTime: Date.now(), totalDuration: Date.now() - startTime, events, stageDurations: {} as any
     }
   };

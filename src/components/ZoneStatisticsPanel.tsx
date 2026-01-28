@@ -103,7 +103,7 @@ export function ZoneStatisticsPanel({ zoneResult, fullResult, recipes, items }: 
         targetZones.forEach(zr => {
             // 1. Production & Consumption from Assignments
             zr.assignments.forEach(a => {
-                const recipe = recipes.find(r => r.id === a.recipeId);
+                const recipe = recipes?.find(r => r.id === a.recipeId);
                 if (!recipe) return;
 
                 // Produced
@@ -134,7 +134,7 @@ export function ZoneStatisticsPanel({ zoneResult, fullResult, recipes, items }: 
 
         // Convert to array
         return Array.from(balanceMap.keys()).map(itemId => {
-            const item = items.find(i => i.id === itemId);
+            const item = items?.find(i => i.id === itemId);
             const s = balanceMap.get(itemId)!;
             // For global mode, net is total produced - total consumed - total sold
             // Actually, net should always represent "excess" in the system
@@ -177,6 +177,26 @@ export function ZoneStatisticsPanel({ zoneResult, fullResult, recipes, items }: 
         return zoneResult?.totalMachines || 0;
     }, [viewMode, fullResult, zoneResult]);
 
+    const machineCounts = useMemo(() => {
+        const counts = new Map<string, number>();
+        const targetZones = (viewMode === 'global' && fullResult) 
+            ? fullResult.zoneResults 
+            : (zoneResult ? [zoneResult] : []);
+
+        targetZones.forEach(zr => {
+            zr.assignments.forEach(a => {
+                const recipe = recipes?.find(r => r.id === a.recipeId);
+                if (!recipe) return;
+                const mName = recipe.machineId; // Or get proper name
+                counts.set(mName, (counts.get(mName) || 0) + a.machineCount);
+            });
+        });
+
+        return Array.from(counts.entries())
+            .map(([id, count]) => ({ id, count }))
+            .sort((a, b) => b.count - a.count);
+    }, [zoneResult, fullResult, viewMode, recipes]);
+
     const activeTitle = viewMode === 'global' ? '全局统计' : (zoneResult?.zone.name || '未知地块');
 
     return (
@@ -215,9 +235,22 @@ export function ZoneStatisticsPanel({ zoneResult, fullResult, recipes, items }: 
                     </div>
                 </div>
 
+                <div className="machine-summary-header mt-3 flex flex-wrap gap-2">
+                    {machineCounts.map(m => (
+                        <div key={m.id} className="text-[10px] bg-white/5 border border-white/10 px-2 py-0.5 rounded flex items-center gap-2">
+                            <span className="text-dim uppercase tracking-tighter">{m.id.replace('machine_', '')}</span>
+                            <span className="text-accent font-bold">x{m.count}</span>
+                        </div>
+                    ))}
+                    {machineCounts.length === 0 && <span className="text-[10px] text-dim opacity-50">NO MACHINES REQUIRED</span>}
+                </div>
+
                 <div className="zone-meta-tags mt-2">
                     <span className="tag">
                         Machines: {totalMachines}
+                    </span>
+                    <span className="tag highlight" style={{color: 'var(--c-warning)', borderColor: 'var(--c-warning)'}}>
+                        Electricity: {viewMode === 'global' ? fullResult?.totalElectricity?.toFixed(0) : zoneResult?.totalElectricity?.toFixed(0)} E/min
                     </span>
                     {viewMode === 'local' && zoneResult && (
                         <span className="tag">
@@ -250,8 +283,8 @@ export function ZoneStatisticsPanel({ zoneResult, fullResult, recipes, items }: 
                             <div className="summary-mini-item">
                                 <Zap size={14} className="text-warning" />
                                 <div className="flex flex-col">
-                                    <span className="label">地块总数</span>
-                                    <span className="val">{fullResult?.zoneResults.length || 0}</span>
+                                    <span className="label">总电力消耗</span>
+                                    <span className="val">{fullResult?.totalElectricity?.toFixed(0)} E/min</span>
                                 </div>
                             </div>
                         </div>
@@ -264,7 +297,7 @@ export function ZoneStatisticsPanel({ zoneResult, fullResult, recipes, items }: 
                                 </div>
                                 <div className="flex flex-wrap gap-2">
                                     {fullResult.globalResourceUsage.map(u => {
-                                        const item = items.find(i => i.id === u.itemId);
+                                        const item = items?.find(i => i.id === u.itemId);
                                         return (
                                             <div key={u.itemId} className="tag-v2">
                                                 <span className="name">{item?.name}</span>
@@ -378,7 +411,7 @@ export function ZoneStatisticsPanel({ zoneResult, fullResult, recipes, items }: 
                             <tr>
                                 <th>Zone</th>
                                 <th className="num-col">Income</th>
-                                <th className="num-col">Raw Usage</th>
+                                <th className="num-col">Electricity</th>
                                 <th className="num-col">Machines</th>
                                 <th className="num-col">Ports</th>
                             </tr>
@@ -401,15 +434,14 @@ export function ZoneStatisticsPanel({ zoneResult, fullResult, recipes, items }: 
                                     <tr key={zr.zone.id}>
                                         <td className="item-name">{zr.zone.name}</td>
                                         <td className="num-col text-success">${zoneIncome.toFixed(1)}</td>
+                                        <td className="num-col text-warning">{zr.totalElectricity?.toFixed(0)} E</td>
+                                        <td className="num-col">{zr.totalMachines}</td>
                                         <td className="num-col">
                                             <div className="flex flex-col items-end gap-0.5">
-                                                {rawUsage.length > 0 ? rawUsage.map((u, idx) => (
-                                                    <span key={idx} className="text-[10px] text-dim">{u.name}: {u.rate.toFixed(0)}</span>
-                                                )) : <span className="text-dim">-</span>}
+                                                <span className="text-[10px] text-dim">PORTS: {zr.outputPortsUsed.toFixed(0)}/{zr.zone.outputPorts}</span>
+                                                {rawUsage.length > 0 && <span className="text-[10px] text-dim">{rawUsage[0].name}...</span>}
                                             </div>
                                         </td>
-                                        <td className="num-col">{zr.totalMachines}</td>
-                                        <td className="num-col">{zr.outputPortsUsed.toFixed(0)}/{zr.zone.outputPorts}</td>
                                     </tr>
                                 );
                             })}

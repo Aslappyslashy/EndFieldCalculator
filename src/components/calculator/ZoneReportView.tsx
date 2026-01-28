@@ -84,8 +84,14 @@ export function ZoneReportView({
               </div>
             </div>
           )}
+          <div className="zone-usage">
+            <span className="usage-text">
+              电量消耗: <span className="text-accent font-bold">{zoneResult.totalElectricity?.toFixed(0)} E/min</span>
+            </span>
+          </div>
         </div>
       </div>
+
 
       <div className="details-grid full-height">
         <div className="details-main">

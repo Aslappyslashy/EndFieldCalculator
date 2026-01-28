@@ -20,6 +20,11 @@ interface ConfigurationPanelProps {
   craftedItems: Item[];
   rawResources: Item[];
   onCalculate: () => void;
+  solverType: 'current' | 'python';
+  onSolverTypeChange: (val: 'current' | 'python') => void;
+  timeLimit: number;
+  onTimeLimitChange: (val: number) => void;
+  pythonSolverAvailable: boolean | null;
   error: string | null;
 }
 
@@ -42,8 +47,17 @@ export function ConfigurationPanel({
   craftedItems,
   rawResources,
   onCalculate,
+  solverType,
+  onSolverTypeChange,
+  timeLimit,
+  onTimeLimitChange,
+  pythonSolverAvailable,
+  isCalculating,
+  elapsedTime,
   error
-}: ConfigurationPanelProps) {
+}: ConfigurationPanelProps & { isCalculating?: boolean; elapsedTime?: number }) {
+
+
   return (
     <div className="calculator-config-details">
       <div className="config-grid-v2">
@@ -126,7 +140,53 @@ export function ConfigurationPanel({
               onChange={(e) => onMachineWeightChange(parseFloat(e.target.value))}
             />
           </div>
+
+          <div className="penalty-control-v2 mt-2">
+            <label title="设置求解器最大运行时间">
+              求解时限 (Time Limit): {timeLimit}s
+            </label>
+            <input
+              type="range"
+              min="5"
+              max="120"
+              step="5"
+              value={timeLimit}
+              onChange={(e) => onTimeLimitChange(parseInt(e.target.value))}
+            />
+          </div>
+
+          <div className="penalty-control-v2 mt-3">
+
+            <label className="flex justify-between items-center">
+              <span>求解器内核 (Solver Core)</span>
+              {solverType === 'python' && (
+                <span className={`text-[10px] px-1 rounded ${pythonSolverAvailable === true ? 'bg-success/20 text-success' : (pythonSolverAvailable === false ? 'bg-error/20 text-error' : 'bg-white/10 text-white/50')}`}>
+                  {pythonSolverAvailable === true ? '● ONLINE' : (pythonSolverAvailable === false ? '● OFFLINE' : '○ CHECKING')}
+                </span>
+              )}
+            </label>
+            <div className="flex gap-2 mt-1">
+              <button
+                className={`btn btn-small flex-1 ${solverType === 'current' ? 'btn-primary' : 'btn-secondary'}`}
+                onClick={() => onSolverTypeChange('current')}
+              >
+                内置 (WASM)
+              </button>
+              <button
+                className={`btn btn-small flex-1 ${solverType === 'python' ? 'btn-primary' : 'btn-secondary'}`}
+                onClick={() => onSolverTypeChange('python')}
+              >
+                Python (FastAPI) RECOMANDED
+              </button>
+            </div>
+            {solverType === 'python' && pythonSolverAvailable === false && (
+              <p className="text-[10px] text-error mt-1 opacity-80">
+                后端服务未启动。请运行 <code>npm run backend</code>
+              </p>
+            )}
+          </div>
         </section>
+
 
         <section className="calculator-section">
           <h3>预期产出目标</h3>
@@ -204,13 +264,25 @@ export function ConfigurationPanel({
       <div className="action-bar-v2">
         <button
           onClick={onCalculate}
-          className="btn btn-primary btn-large btn-full flex items-center justify-center gap-2"
+          disabled={isCalculating}
+          className={`btn btn-primary btn-large btn-full flex items-center justify-center gap-2 ${isCalculating ? 'opacity-50 cursor-not-allowed' : ''}`}
         >
-          <TrendingUp size={20} /> {/* Using TrendingUp as a generic action icon */}
-          <span>生成工业布局方案</span>
+          {isCalculating ? (
+            <>
+              <div className="w-4 h-4 border-2 border-accent border-t-transparent rounded-full animate-spin"></div>
+              <span>算法运行中... ({elapsedTime?.toFixed(1)}s)</span>
+            </>
+          ) : (
+
+            <>
+              <TrendingUp size={20} />
+              <span>生成工业布局方案</span>
+            </>
+          )}
         </button>
         {error && <div className="error-message">{error}</div>}
       </div>
+
     </div>
   );
 }

@@ -49,11 +49,13 @@ function App() {
   const [transferPenalty, setTransferPenalty] = useState(0.5);
   const [consolidationWeight, setConsolidationWeight] = useState(0.05);
   const [machineWeight, setMachineWeight] = useState(0.01);
+  const [timeLimit, setTimeLimit] = useState(30);
   const [nodePositions, setNodePositions] = useState<Record<string, { x: number; y: number }>>({});
 
   const [calculatorResult, setCalculatorResult] = useState<CalculatorResult | null>(null);
   const [optimizerEvents, setOptimizerEvents] = useState<OptimizerEvent[]>([]);
   const [isOptimizerCalculating, setIsOptimizerCalculating] = useState(false);
+  const [solverType, setSolverType] = useState<'current' | 'python'>('current');
 
   // Sync state from active scenario (lifted from Calculator)
   useEffect(() => {
@@ -64,6 +66,7 @@ function App() {
       setTransferPenalty(activeScenario.data.transferPenalty ?? 0.5);
       setConsolidationWeight(activeScenario.data.consolidationWeight ?? 0.05);
       setMachineWeight(activeScenario.data.machineWeight ?? 0.01);
+      setTimeLimit(activeScenario.data.timeLimit ?? 30);
       setNodePositions(activeScenario.data.nodePositions || {});
     }
   }, [activeScenario]);
@@ -132,15 +135,16 @@ function App() {
               {!sidebarCollapsed && <span className="nav-text">地块区域管理</span>}
               {!sidebarCollapsed && <span className="nav-dot"></span>}
             </button>
-            <button
-              className={`nav-item ${activeTab === 'items' ? 'active' : ''}`}
-              onClick={() => setActiveTab('items')}
-              title="物品协议清单"
-            >
-              <Package size={20} className="nav-icon" />
-              {!sidebarCollapsed && <span className="nav-text">物品协议清单</span>}
-              {!sidebarCollapsed && <span className="nav-dot"></span>}
-            </button>
+              <button
+                className={`nav-item ${activeTab === 'items' ? 'active' : ''}`}
+                onClick={() => setActiveTab('items')}
+                title="工业协议管理"
+              >
+                <Package size={20} className="nav-icon" />
+                {!sidebarCollapsed && <span className="nav-text">工业协议管理</span>}
+                {!sidebarCollapsed && <span className="nav-dot"></span>}
+              </button>
+
             <button
               className={`nav-item ${activeTab === 'machines' ? 'active' : ''}`}
               onClick={() => setActiveTab('machines')}
@@ -159,15 +163,19 @@ function App() {
               {!sidebarCollapsed && <span className="nav-text">加工配方库</span>}
               {!sidebarCollapsed && <span className="nav-dot"></span>}
             </button>
-            <button
-              className={`nav-item ${activeTab === 'optimizer' ? 'active' : ''}`}
-              onClick={() => setActiveTab('optimizer')}
-              title="优化流水流水线"
-            >
-              <Activity size={20} className={`nav-icon ${isOptimizerCalculating ? 'text-accent animate-pulse' : ''}`} />
-              {!sidebarCollapsed && <span className="nav-text">优化流水流水线</span>}
-              {!sidebarCollapsed && <span className="nav-dot"></span>}
-            </button>
+              <button
+                className={`nav-item ${activeTab === 'optimizer' ? 'active' : ''}`}
+                onClick={() => setActiveTab('optimizer')}
+                title="优化流水流水线"
+              >
+                <Activity size={20} className={`nav-icon ${isOptimizerCalculating ? 'text-accent animate-pulse' : ''}`} />
+                {!sidebarCollapsed && <span className="nav-text">优化流水流水线</span>}
+                {isOptimizerCalculating && !sidebarCollapsed && (
+                   <span className="ml-auto text-[10px] bg-accent/20 text-accent px-1 rounded animate-pulse">RUNNING</span>
+                )}
+                {!sidebarCollapsed && !isOptimizerCalculating && <span className="nav-dot"></span>}
+              </button>
+
           </nav>
 
           <div className="sidebar-footer">
@@ -200,10 +208,15 @@ function App() {
                 setTransferPenalty={setTransferPenalty}
                 consolidationWeight={consolidationWeight}
                 setConsolidationWeight={setConsolidationWeight}
-                machineWeight={machineWeight}
-                setMachineWeight={setMachineWeight}
-                nodePositions={nodePositions}
+                 machineWeight={machineWeight}
+                 setMachineWeight={setMachineWeight}
+                 timeLimit={timeLimit}
+                 setTimeLimit={setTimeLimit}
+                 nodePositions={nodePositions}
+
                 setNodePositions={setNodePositions}
+                solverType={solverType}
+                setSolverType={setSolverType}
 
                 // Result State
                 result={calculatorResult}
@@ -212,6 +225,7 @@ function App() {
                 // Scenario Hook
                 scenarioHook={scenarioHook}
 
+                isCalculating={isOptimizerCalculating}
                 onStartCalculation={() => {
                   setOptimizerEvents([]);
                   setIsOptimizerCalculating(true);

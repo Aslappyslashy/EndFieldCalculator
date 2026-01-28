@@ -1,4 +1,4 @@
-import type { CalculatorInput, Item, Recipe } from '../types';
+import type { CalculatorInput, Item, Recipe, Machine } from '../types';
 import { calculateTheoreticalMaxCore, calculateZoneOptimalProductionCore } from '../utils/zoneSolverCore';
 
 type WorkerRequest = {
@@ -7,6 +7,7 @@ type WorkerRequest = {
     input: CalculatorInput;
     items: Item[];
     recipes: Recipe[];
+    machines: Machine[];
     rawResources: Item[];
     machineAreas?: Array<{ machineId: string; area: number }>;
   };
@@ -17,19 +18,19 @@ self.onmessage = (e: MessageEvent<WorkerRequest>) => {
 
   try {
     if (msg.type === 'solveAll') {
-      const { input, items, recipes, rawResources, machineAreas } = msg.payload;
+      const { input, items, recipes, machines, rawResources, machineAreas } = msg.payload;
       const machineAreaById = machineAreas
         ? new Map(machineAreas.map(x => [x.machineId, x.area] as const))
         : undefined;
 
       const result = calculateZoneOptimalProductionCore({
-        data: { items, recipes, rawResources, machineAreaById },
+        data: { items, recipes, machines, rawResources, machineAreaById },
         input,
         onProgress: (event) => {
           (self as unknown as Worker).postMessage({ type: 'solveProgress', payload: event });
         }
       });
-      const theoreticalMax = calculateTheoreticalMaxCore({ data: { items, recipes, rawResources }, input });
+      const theoreticalMax = calculateTheoreticalMaxCore({ data: { items, recipes, machines, rawResources }, input });
       (self as unknown as Worker).postMessage({ type: 'solveAllResult', payload: { result, theoreticalMax } });
       return;
     }

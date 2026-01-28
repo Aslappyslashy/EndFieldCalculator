@@ -13,7 +13,9 @@ export interface Machine {
   name: string;
   description: string;
   area?: number; // Optional footprint area (e.g. 6x4 => 24)
+  electricity?: number; // Electricity cost per minute
 }
+
 
 export interface Recipe {
   id: string;
@@ -87,7 +89,9 @@ export interface CalculatorInput {
   transferPenalty?: number;  // For 'balanced' mode: how much to penalize transfers (0-1)
   consolidationWeight?: number; // Penalty for activating a recipe in a zone (0-1)
   machineWeight?: number; // Penalty per machine in Stage A (0-1)
+  timeLimit?: number; // Solver time limit in seconds
 }
+
 
 export interface ZoneResult {
   zone: Zone;
@@ -95,6 +99,7 @@ export interface ZoneResult {
   outputPortsUsed: number;    // How many output ports consumed (the bottleneck)
   inputPortsUsed: number;     // How many input ports consumed
   totalMachines: number;
+  totalElectricity?: number;  // Total electricity consumption in this zone
   itemsFromPool: { itemId: string; rate: number }[];  // What this zone extracts
   itemsToPool: { itemId: string; rate: number }[];    // What this zone sends out
   itemsSold: { itemId: string; rate: number }[];      // What this zone sells (sent to pool; consumes input ports)
@@ -109,7 +114,9 @@ export interface CalculatorResult {
   infeasibleReason?: 'solver_infeasible' | 'unmet_targets' | 'unknown';
   zoneResults: ZoneResult[];
   totalIncome: number;        // Per minute
+  totalElectricity?: number;  // Global electricity consumption
   totalOutputPortsUsed: number;
+
   globalResourceUsage: { itemId: string; rate: number }[];  // Raw material consumption
   itemFlows: ItemFlow[];      // All inter-zone flows for visualization
   unmetTargets: { itemId: string; shortfall: number }[];
@@ -193,8 +200,10 @@ export interface ScenarioData {
   transferPenalty: number;
   consolidationWeight?: number;
   machineWeight?: number;
+  timeLimit?: number;
   nodePositions?: Record<string, { x: number; y: number }>;
 }
+
 
 export interface Scenario {
   id: string;

@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+
 import {
   Settings2,
   CheckCircle2,
@@ -20,48 +21,57 @@ import { ConfigurationPanel } from './calculator/ConfigurationPanel';
 import { ZoneNavigator } from './calculator/ZoneNavigator';
 import { ZoneReportView } from './calculator/ZoneReportView';
 
-interface CalculatorProps {
-  // Config State
-  targets: ProductionTarget[];
-  setTargets: (t: ProductionTarget[]) => void;
-  constraints: ResourceConstraint[];
-  setConstraints: (c: ResourceConstraint[]) => void;
-  optimizationMode: OptimizationMode;
-  setOptimizationMode: (m: OptimizationMode) => void;
-  transferPenalty: number;
-  setTransferPenalty: (p: number) => void;
-  consolidationWeight: number;
-  setConsolidationWeight: (w: number) => void;
-  machineWeight: number;
-  setMachineWeight: (w: number) => void;
-  nodePositions: Record<string, { x: number; y: number }>;
-  setNodePositions: (p: Record<string, { x: number; y: number }> | ((prev: Record<string, { x: number; y: number }>) => Record<string, { x: number; y: number }>)) => void;
+ interface CalculatorProps {
+   // Config State
+   targets: ProductionTarget[];
+   setTargets: (t: ProductionTarget[]) => void;
+   constraints: ResourceConstraint[];
+   setConstraints: (c: ResourceConstraint[]) => void;
+   optimizationMode: OptimizationMode;
+   setOptimizationMode: (m: OptimizationMode) => void;
+   transferPenalty: number;
+   setTransferPenalty: (p: number) => void;
+   consolidationWeight: number;
+   setConsolidationWeight: (w: number) => void;
+   machineWeight: number;
+   setMachineWeight: (w: number) => void;
+   timeLimit: number;
+   setTimeLimit: (t: number) => void;
+   nodePositions: Record<string, { x: number; y: number }>;
+   setNodePositions: (p: Record<string, { x: number; y: number }> | ((prev: Record<string, { x: number; y: number }>) => Record<string, { x: number; y: number }>)) => void;
+   solverType: 'current' | 'python';
+   setSolverType: (s: 'current' | 'python') => void;
+ 
+   // Result State
+   result: CalculatorResult | null;
+   setResult: (r: CalculatorResult | null) => void;
+ 
+   // Scenario Hook
+   scenarioHook: any;
+ 
+   isCalculating?: boolean; // Added this
+   onStartCalculation?: () => void;
+   onCalculationProgress?: (event: OptimizerEvent) => void;
+   onCalculationComplete?: (result: CalculatorResult) => void;
+ }
+ 
+ export function Calculator(props: CalculatorProps) {
+   const {
+     targets, setTargets,
+     constraints, setConstraints,
+     optimizationMode, setOptimizationMode,
+     transferPenalty, setTransferPenalty,
+     consolidationWeight, setConsolidationWeight,
+     machineWeight, setMachineWeight,
+     timeLimit, setTimeLimit,
+     nodePositions, setNodePositions,
+     solverType, setSolverType,
+     result, setResult,
+     scenarioHook,
+     isCalculating, // Added this
+     onStartCalculation, onCalculationProgress, onCalculationComplete
+   } = props;
 
-  // Result State
-  result: CalculatorResult | null;
-  setResult: (r: CalculatorResult | null) => void;
-
-  // Scenario Hook
-  scenarioHook: any;
-
-  onStartCalculation?: () => void;
-  onCalculationProgress?: (event: OptimizerEvent) => void;
-  onCalculationComplete?: (result: CalculatorResult) => void;
-}
-
-export function Calculator(props: CalculatorProps) {
-  const {
-    targets, setTargets,
-    constraints, setConstraints,
-    optimizationMode, setOptimizationMode,
-    transferPenalty, setTransferPenalty,
-    consolidationWeight, setConsolidationWeight,
-    machineWeight, setMachineWeight,
-    nodePositions, setNodePositions,
-    result, setResult,
-    scenarioHook,
-    onStartCalculation, onCalculationProgress, onCalculationComplete
-  } = props;
 
   const { items } = useItems();
   const { recipes } = useRecipes();
@@ -111,23 +121,59 @@ export function Calculator(props: CalculatorProps) {
         maxRate: r.baseProductionRate || 100,
       }));
 
-  const handleCalculate = async () => {
-    setError(null);
-    setResult(null);
-    if (onStartCalculation) onStartCalculation();
+   const [pythonSolverAvailable, setPythonSolverAvailable] = useState<boolean | null>(null);
+   const [elapsedTime, setElapsedTime] = useState(0);
+ 
+   // Check Python solver availability
+   useEffect(() => {
+     fetch('http://localhost:8000/docs', { mode: 'no-cors' })
+       .then(() => setPythonSolverAvailable(true))
+       .catch(() => setPythonSolverAvailable(false));
+   }, []);
+
+   // Timer for calculation
+   useEffect(() => {
+     let interval: any;
+     if (isCalculating) {
+       const start = Date.now();
+       interval = setInterval(() => {
+         setElapsedTime((Date.now() - start) / 1000);
+       }, 100);
+     } else {
+       // We keep the last value or reset it? Let's reset when start, but keep for display?
+       // Actually, resetting it inside handleCalculate is better.
+     }
+     return () => clearInterval(interval);
+   }, [isCalculating]);
+
+
+   const handleCalculate = async () => {
+     console.log('Calculation started', { solverType, targets, zones });
+     setError(null);
+     setResult(null);
+     setElapsedTime(0);
+     if (onStartCalculation) onStartCalculation();
+
 
     if (targets.length === 0 && optimizationMode !== 'maxIncome') {
-      setError('常规模式下需添加目标产物。如需自动探索最大利润，请切换至【产值最大化】模式。');
+      const msg = '常规模式下需添加目标产物。如需自动探索最大利润，请切换至【产值最大化】模式。';
+      setError(msg);
+      console.warn(msg);
+      if (onCalculationComplete) onCalculationComplete({ feasible: false } as any);
       return;
     }
 
     if (recipes.length === 0) {
-      setError('配方库为空。请先在物品管理页面加载协议数据。');
+      const msg = '配方库为空。请先在物品管理页面加载协议数据。';
+      setError(msg);
+      console.error(msg);
       return;
     }
 
     if (zones.length === 0) {
-      setError('未定义地块。请先在区域管理页面创建至少一个地块。');
+      const msg = '未定义地块。请先在区域管理页面创建至少一个地块。';
+      setError(msg);
+      console.error(msg);
       return;
     }
 
@@ -140,6 +186,7 @@ export function Calculator(props: CalculatorProps) {
         transferPenalty: optimizationMode === 'balanced' ? transferPenalty : undefined,
         consolidationWeight,
         machineWeight,
+        timeLimit,
       };
 
       const rawResourcesForWorker = items.filter(i => i.isRawResource);
@@ -147,38 +194,116 @@ export function Calculator(props: CalculatorProps) {
         .filter(m => typeof m.area === 'number' && (m.area as number) > 0)
         .map(m => ({ machineId: m.id, area: m.area as number }));
 
-      const worker = new Worker(new URL('../workers/solverWorker.ts', import.meta.url), { type: 'module' });
+      let calcResult: CalculatorResult;
 
-      const { result: calcResult } = await new Promise<{ result: CalculatorResult; theoreticalMax: number }>((resolve, reject) => {
-        const onMessage = (e: MessageEvent) => {
-          const msg = e.data;
-          if (!msg || typeof msg.type !== 'string') return;
-          if (msg.type === 'solveProgress' && onCalculationProgress) {
-            onCalculationProgress(msg.payload as OptimizerEvent);
-          }
-          if (msg.type === 'solveAllResult') {
-            worker.removeEventListener('message', onMessage);
-            resolve(msg.payload as { result: CalculatorResult; theoreticalMax: number });
-          }
-          if (msg.type === 'error') {
-            worker.removeEventListener('message', onMessage);
-            reject(new Error(String(msg.payload)));
-          }
-        };
-        worker.addEventListener('message', onMessage);
-        worker.postMessage({
-          type: 'solveAll',
-          payload: {
+      if (solverType === 'python') {
+        console.log('Sending request to Python solver...');
+        if (onCalculationProgress) {
+          onCalculationProgress({
+            stage: 'INIT',
+            timestamp: Date.now(),
+            message: 'Initializing Python solver connection...',
+            metrics: { income: 0, machines: 0, transfers: 0, feasible: true }
+          });
+        }
+
+        const response = await fetch('http://localhost:8000/solve', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
             input,
             items,
             recipes,
-            rawResources: rawResourcesForWorker,
-            machineAreas,
-          },
+            machines,
+          }),
         });
-      }).finally(() => worker.terminate());
+
+        console.log('Python solver response status:', response.status);
+        
+        if (onCalculationProgress) {
+          onCalculationProgress({
+            stage: 'STAGE_B',
+            timestamp: Date.now(),
+            message: 'Python backend returned results. Parsing and validating solution...',
+            metrics: { income: 0, machines: 0, transfers: 0, feasible: response.ok }
+          });
+        }
+
+        if (!response.ok) {
+          const detail = await response.json().catch(() => ({ detail: response.statusText }));
+          throw new Error(`Python Solver Error: ${detail.detail || response.statusText}`);
+        }
+
+        calcResult = await response.json();
+        console.log('Python solver result:', calcResult);
+
+        if (onCalculationProgress) {
+          // Add detailed logs for each zone found
+          calcResult.zoneResults.forEach(zr => {
+            onCalculationProgress({
+              stage: 'CONSOLIDATION',
+              timestamp: Date.now(),
+              message: `Processed Zone: ${zr.zone.name} - ${zr.totalMachines} machines, ${zr.itemsSold.length} products.`,
+              metrics: {
+                income: calcResult.totalIncome,
+                machines: calcResult.zoneResults.reduce((sum, z) => sum + z.totalMachines, 0),
+                transfers: 0,
+                feasible: calcResult.feasible
+              }
+            });
+          });
+
+          onCalculationProgress({
+            stage: 'FINAL',
+            timestamp: Date.now(),
+            message: 'Python solver optimization completed successfully.',
+            metrics: {
+              income: calcResult.totalIncome,
+              machines: calcResult.zoneResults.reduce((sum, zr) => sum + zr.totalMachines, 0),
+              transfers: 0,
+              feasible: calcResult.feasible
+            }
+          });
+        }
+      } else {
+        console.log('Using WASM solver worker...');
+        const worker = new Worker(new URL('../workers/solverWorker.ts', import.meta.url), { type: 'module' });
+
+
+        const res = await new Promise<{ result: CalculatorResult; theoreticalMax: number }>((resolve, reject) => {
+          const onMessage = (e: MessageEvent) => {
+            const msg = e.data;
+            if (!msg || typeof msg.type !== 'string') return;
+            if (msg.type === 'solveProgress' && onCalculationProgress) {
+              onCalculationProgress(msg.payload as OptimizerEvent);
+            }
+            if (msg.type === 'solveAllResult') {
+              worker.removeEventListener('message', onMessage);
+              resolve(msg.payload as { result: CalculatorResult; theoreticalMax: number });
+            }
+            if (msg.type === 'error') {
+              worker.removeEventListener('message', onMessage);
+              reject(new Error(String(msg.payload)));
+            }
+          };
+          worker.addEventListener('message', onMessage);
+          worker.postMessage({
+            type: 'solveAll',
+            payload: {
+              input,
+              items,
+              recipes,
+              machines,
+              rawResources: rawResourcesForWorker,
+              machineAreas,
+            },
+          });
+        }).finally(() => worker.terminate());
+        calcResult = res.result;
+      }
 
       setResult(calcResult);
+
       if (onCalculationComplete) onCalculationComplete(calcResult);
 
       if (calcResult.feasible) {
@@ -321,12 +446,21 @@ export function Calculator(props: CalculatorProps) {
                     newConstraints[index] = { ...newConstraints[index], maxRate: parseFloat(value) || 0 };
                     setConstraints(newConstraints);
                   }}
-                  sellableItems={sellableItems}
-                  craftedItems={craftedItems}
-                  rawResources={rawResources}
-                  onCalculate={handleCalculate}
-                  error={error}
-                />
+                   sellableItems={sellableItems}
+                   craftedItems={craftedItems}
+                   rawResources={rawResources}
+                   onCalculate={handleCalculate}
+                   solverType={solverType}
+                   onSolverTypeChange={setSolverType}
+                   timeLimit={timeLimit}
+                   onTimeLimitChange={setTimeLimit}
+                   pythonSolverAvailable={pythonSolverAvailable}
+                   isCalculating={isCalculating}
+                   elapsedTime={elapsedTime}
+                   error={error}
+                 />
+
+
               </>
             ) : (() => {
               const zoneResult = result?.zoneResults.find(z => z.zone.id === selectedZoneId);

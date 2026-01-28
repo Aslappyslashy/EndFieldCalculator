@@ -18,7 +18,7 @@ export function calculateZoneOptimalProduction(input: CalculatorInput): Calculat
   const machineAreaById = new Map(machines.map(m => [m.id, m.area] as const));
 
   return calculateZoneOptimalProductionCore({
-    data: { items, recipes, rawResources, machineAreaById },
+    data: { items, recipes, machines, rawResources, machineAreaById },
     input,
   });
 }
@@ -26,8 +26,9 @@ export function calculateZoneOptimalProduction(input: CalculatorInput): Calculat
 export function calculateTheoreticalMax(input: CalculatorInput): number {
   const items = getAllItems();
   const recipes = getAllRecipes();
+  const machines = getAllMachines();
   const rawResources = getRawResources();
-  return calculateTheoreticalMaxCore({ data: { items, recipes, rawResources }, input });
+  return calculateTheoreticalMaxCore({ data: { items, recipes, machines, rawResources }, input });
 }
 
 // Legacy re-export compatibility (some code imports Recipe type locally)
