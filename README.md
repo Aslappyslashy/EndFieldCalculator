@@ -1,8 +1,8 @@
 ## Endfield Industrial Calculator
 
 ### Solvers
-- **Built-in (WASM):** Runs directly in your browser using `javascript-lp-solver`. No setup required.
-- **Python (FastAPI):** Uses a MILP model with `PuLP` and `CBC`. Requires a Python environment.
+- **Built-in (WASM):** Runs directly in your browser using `javascript-lp-solver`. No setup required. (Not Recommanded but faster)
+- **Python (FastAPI):** Uses a MILP model with `PuLP` and `highspy`. Requires a Python environment. (Recommanded but slower)
 
 To use the Python solver:
 1. Run the install script for your platform:
