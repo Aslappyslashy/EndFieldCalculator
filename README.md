@@ -1,32 +1,56 @@
 <div align="center">
-  <img src="img/logo.svg" alt="Endfield Industrial Calculator" width="400" />
-  <br/>
-  <img src="img/demo1.png" alt="Dashboard Showcase" width="800" />
+  <img src="img/logo.svg" alt="Endfield Industrial Calculator" width="100%" />
 </div>
 
-# 终末地工业计算器 (Endfield Industrial Calculator)
+<div align="center">
 
-[中文](#中文指南) | [English](#english-guide)
+# 终末地工业计算器
+### Endfield Industrial Calculator
+
+[**English (README_EN.md)**](README_EN.md)
+
+</div>
 
 ---
 
-<a name="中文指南"></a>
-## 🇨🇳 中文指南
+### 📖 项目简介
+本项目是一个针对《终末地》工业系统的可视化规划与优化工具。通过直观的节点拖拽与连接，您可以设计复杂的工厂布局，并通过内置的算法引擎计算最优的资源配置方案。
 
-### 功能特性
-- **可视化生产流程：** 拖拽节点设计工厂布局，直观管理生产线。
-- **全局资源管理：** 设定原料限制，通过算法优化实现最大利润。
-- **多平台支持：** 完全兼容 Windows, macOS, 和 Linux 系统。
+### ✨ 核心功能
+- **可视化蓝图设计**：支持拖拽式节点编辑，所见即所得的工厂布局设计。
+- **智能产线优化**：基于全局资源限制，自动计算最大化收益的生产配比。
+- **多平台适配**：完美运行于 Windows, macOS 及 Linux 环境。
 
-### 安装说明
+### 🧠 算法核心逻辑
+本项目使用 **混合整数线性规划 (MILP)** 进行全局优化。
+*详细数学模型请参考 [PLAN.md](PLAN.md)*
 
-#### 前置要求
-1.  **Node.js:** (v18 或更高版本) [点击下载](https://nodejs.org/)
-2.  **Python:** (v3.13 或更高版本) [点击下载](https://www.python.org/)
-3.  **Git:** (可选) 用于克隆仓库。
+1.  **全局资源限制**：根据玩家设定的原矿采集上限，规划最佳产出。
+2.  **区域物流平衡**：自动计算每个地块 (Zone) 的输入输出，并确保跨区物流守恒（发出的货物必须等于收到的货物）。
+3.  **端口离散化**：准确模拟游戏机制，每个物品占用独立的输入/输出端口（使用整数变量约束）。
+4.  **空间与电力约束**：
+    *   **面积限制**：机器占地 + 传送带估算面积 $\le$ 地块最大面积。
+    *   **机器数量**：受限于地块的插槽上限。
+5.  **目标函数**：
+    *   最大化 **净利润** (卖出价值 - 运输成本)。
+    *   包含 **配方激活惩罚** (鼓励产线专一化) 和 **机器数量惩罚** (鼓励使用更少的高效机器)。
 
-#### 1. 安装
-运行对应操作系统的安装脚本以下载依赖并创建 Python 虚拟环境。
+### 🖼️ 界面预览
+<div align="center">
+  <img src="img/demo1.png" alt="Dashboard Showcase" width="100%" style="border-radius: 8px; border: 1px solid #333;" />
+</div>
+
+---
+
+### 🚀 快速开始
+
+#### 1. 环境准备
+请确保您的系统已安装以下基础环境：
+- **Node.js:** v18+ [下载](https://nodejs.org/)
+- **Python:** v3.13+ [下载](https://www.python.org/)
+
+#### 2. 安装依赖
+运行项目根目录下的安装脚本，自动配置 Python 虚拟环境及依赖库。
 
 *   **Windows:**
     ```cmd
@@ -38,119 +62,44 @@
     ./install.sh
     ```
 
-#### 2. 构建前端
-将 React 应用编译为优化后的静态文件以供部署：
+#### 3. 编译前端
+将 React 前端代码编译为静态资源：
 
-*   **Windows:**
-    ```cmd
-    setup.bat
-    ```
-*   **Linux / macOS:**
-    ```bash
-    ./setup.sh
-    ```
+*   **Windows:** `setup.bat`
+*   **Linux / macOS:** `./setup.sh`
 
-#### 3. 运行应用
-您需要同时运行 **后端 (Backend)** (用于高级求解器) 和 **前端 (Frontend)**。
+#### 4. 启动应用
+本项目采用前后端分离架构，需同时启动两个服务。
 
-**1. 启动后端求解器：**
-*   **Windows:**
-    ```cmd
-    venv\Scripts\activate
-    python main.py
-    ```
-*   **Linux / macOS:**
-    ```bash
-    source venv/bin/activate
-    python main.py
-    ```
-*(后端将运行在 `http://localhost:8000`)，可在 main.py 中配置*
+**步骤 A: 启动后端求解器**
+```bash
+# Windows
+venv\Scripts\activate
+python main.py
 
-**2. 启动前端：**
-打开一个新的终端窗口并运行：
+# Linux / macOS
+source venv/bin/activate
+python main.py
+```
+*(后端服务端口: 8000)*
+
+**步骤 B: 启动前端界面**
+在新的终端窗口中运行：
 ```bash
 npm run dev
 ```
-*(前端将运行在 `http://localhost:5173`)*
-
-#### 4. 浏览器中使用
-1.  打开浏览器访问前端地址。
-2.  点击 **设置 (Settings)** (齿轮图标)。
-3.  在 **求解器类型 (Solver Type)** 下选择：
-    *   `Built-in (WASM)`：用于无需后端的基础计算，但可能无法求解复杂情况。
-    *   `Python (FastAPI)`：用于复杂的多区域优化 (需要后端运行)。
+*(访问地址: http://localhost:5173)*
 
 ---
 
-<a name="english-guide"></a>
-## 🇺🇸 English Guide
+### ⚙️ 使用指南
+1.  浏览器访问 `http://localhost:5173`。
+2.  点击右上角的 **设置 (⚙️)** 图标。
+3.  **求解器选择**：
+    *   `Built-in (WASM)`：轻量级，适合简单计算（无需启动 Python 后端）。
+    *   `Python (FastAPI)`：推荐，支持复杂的多区域联合优化（需启动 Python 后端）。
 
-### Features
-- **Visual Production Flow:** Drag-and-drop nodes to design your factory layout.
-- **Global Resource Management:** Set limits on raw resources and optimize for maximum profit.
-- **Multi-Platform:** Fully compatible with Windows, macOS, and Linux.
-
-### Setup Instructions
-
-#### Prerequisites
-1.  **Node.js:** (v18 or higher) [Download here](https://nodejs.org/)
-2.  **Python:** (v3.13 or higher) [Download here](https://www.python.org/)
-3.  **Git:** (Optional) To clone the repository.
-
-#### 1. Installation
-Run the install script for your specific operating system to download dependencies and create a Python virtual environment.
-
-*   **Windows:**
-    ```cmd
-    install.bat
-    ```
-*   **Linux / macOS:**
-    ```bash
-    chmod +x *.sh
-    ./install.sh
-    ```
-
-#### 2. Building the Frontend
-To compile the React application into optimized static files for deployment:
-
-*   **Windows:**
-    ```cmd
-    setup.bat
-    ```
-*   **Linux / macOS:**
-    ```bash
-    ./setup.sh
-    ```
-
-#### 3. Running the Application
-You need to run both the **Backend** (for the advanced solver) and the **Frontend**.
-
-**1. Start the Backend Solver:**
-*   **Windows:**
-    ```cmd
-    venv\Scripts\activate
-    python main.py
-    ```
-*   **Linux / macOS:**
-    ```bash
-    source venv/bin/activate
-    python main.py
-    ```
-*(The backend will run on `http://localhost:8000`) configurable in main.py* 
-
-**2. Start the Frontend:**
-Open a new terminal and run:
-```bash
-npm run dev
-```
-*(The frontend will be available at `http://localhost:5173`)*
-
-#### 4. Usage in Browser
-1.  Open your browser to the frontend URL.
-2.  Go to **Settings** (Gear icon).
-3.  Under **Solver Type**, select:
-    *   `Built-in (WASM)` for basic calculations without the backend, but often fail to solve.
-    *   `Python (FastAPI)` for complex multi-zone optimization (requires backend to be running).
-
----
-
+### 🛠️ 技术栈
+- **Frontend:** React, Vite (SWC/Babel), TypeScript
+- **Backend:** Python, FastAPI, PuLP (Optimization)
+- **UI Theme:** Industrial Sci-Fi (Dark Mode)

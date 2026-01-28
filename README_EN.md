@@ -21,6 +21,20 @@ A specialized visual planning and optimization tool for the Endfield industrial 
 - **Intelligent Optimization:** Automatically calculate the most profitable production ratios based on global resource constraints.
 - **Cross-Platform:** Fully compatible with Windows, macOS, and Linux.
 
+### 🧠 Algorithm Logic
+This project uses **Mixed-Integer Linear Programming (MILP)** for global optimization.
+*For detailed mathematical models, see [PLAN.md](PLAN.md)*
+
+1.  **Global Resource Constraints**: Optimizes output based on raw material mining limits set by the user.
+2.  **Zone Logistics Balance**: Automatically calculates input/output for each zone and ensures cross-zone logistics conservation (Total Export $\ge$ Total Import).
+3.  **Discrete Ports**: Accurately simulates game mechanics where each item type occupies a dedicated Input/Output port (using Integer constraints).
+4.  **Space & Power Constraints**:
+    *   **Area Limit**: Machine Area + Estimated Belt Area $\le$ Zone Max Area.
+    *   **Machine Slots**: Limited by the zone's max slot capacity.
+5.  **Objective Function**:
+    *   Maximize **Net Profit** (Sales Value - Transport Cost).
+    *   Includes **Recipe Activation Penalty** (encourages specialization) and **Machine Count Penalty** (encourages efficiency).
+
 ### 🖼️ Interface Showcase
 <div align="center">
   <img src="img/demo1.png" alt="Dashboard Showcase" width="100%" style="border-radius: 8px; border: 1px solid #333;" />
