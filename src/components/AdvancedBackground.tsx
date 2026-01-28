@@ -22,46 +22,57 @@ export const AdvancedBackground: React.FC = () => {
     resize();
 
     const draw = () => {
-      time += 0.005;
+      time += 0.002; // Slower speed
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       
-      // Draw grid points (dense points)
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
-      const gap = 30;
+      // Draw grid points (dense points) - Keep or remove? User asked for contour lines.
+      // I'll make them very subtle or remove them if they clash. Let's keep them subtle.
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.02)';
+      const gap = 40;
       for (let x = 0; x < canvas.width; x += gap) {
         for (let y = 0; y < canvas.height; y += gap) {
-          ctx.fillRect(x, y, 1, 1);
+          if (Math.random() > 0.5) ctx.fillRect(x, y, 1, 1);
         }
       }
 
-      // Draw contour lines (等高线)
-      ctx.strokeStyle = 'rgba(230, 194, 0, 0.08)';
-      ctx.lineWidth = 0.8;
+      // Draw contour lines (等高线) - Dark Gray, Top to Down
+      ctx.strokeStyle = 'rgba(80, 80, 80, 0.4)'; // Dark gray
+      ctx.lineWidth = 1.2;
 
-      for (let i = 0; i < 12; i++) {
+      // Create a "terrain" feel by stacking lines
+      const lineCount = 15;
+      const spacing = canvas.height / 10;
+      
+      for (let i = 0; i < lineCount; i++) {
         ctx.beginPath();
-        const yBase = (i * (canvas.height / 10) + time * 30) % (canvas.height + 200) - 100;
         
-        ctx.moveTo(-100, yBase);
-        for (let x = -100; x < canvas.width + 100; x += 40) {
-          // Perlin-like noise simulation
-          const noise = Math.sin(x * 0.001 + time + i * 0.5) * 40 + 
-                        Math.sin(x * 0.002 - time * 0.3) * 20;
-          ctx.lineTo(x, yBase + noise);
+        // Moving down (top to down)
+        // (i * spacing + time * speed)
+        const yBase = (i * spacing + time * 15) % (canvas.height + 200) - 100;
+        
+        // Start line
+        ctx.moveTo(-50, yBase);
+        
+        for (let x = -50; x < canvas.width + 50; x += 15) {
+          // Complex noise for "isoline" look
+          // We want the shape to evolve slowly but maintain coherence
+          const noiseX = x * 0.003;
+          const noiseY = i * 0.1;
+          const noiseT = time * 0.2;
+          
+          const yOffset = 
+            Math.sin(noiseX + noiseT + noiseY) * 40 + 
+            Math.sin(noiseX * 2.5 - noiseT * 0.5) * 20 +
+            Math.cos(noiseX * 0.5 + noiseY) * 30;
+
+          ctx.lineTo(x, yBase + yOffset);
         }
         ctx.stroke();
       }
 
-      // Add "Data Streams" (Dense vertical lines)
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.02)';
-      for (let i = 0; i < 8; i++) {
-        const x = (i * 400 + time * 120) % (canvas.width + 100) - 50;
-        ctx.beginPath();
-        ctx.moveTo(x, 0);
-        ctx.lineTo(x, canvas.height);
-        ctx.stroke();
-      }
-
+      // Optional: Add some "vertical data streams" or subtle vertical lines to enhance the "tech" feel
+      // keeping it minimal as per "dark gray contour line" focus
+    
       animationFrameId = requestAnimationFrame(draw);
     };
 
