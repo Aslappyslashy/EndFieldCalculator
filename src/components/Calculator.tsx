@@ -448,19 +448,19 @@ import { ErrorBoundary } from './ErrorBoundary';
                     newConstraints[index] = { ...newConstraints[index], maxRate: parseFloat(value) || 0 };
                     setConstraints(newConstraints);
                   }}
-                   sellableItems={sellableItems}
-                   craftedItems={craftedItems}
-                   rawResources={rawResources}
-                   onCalculate={handleCalculate}
-                   solverType={solverType}
-                   onSolverTypeChange={setSolverType}
-                   timeLimit={timeLimit}
-                   onTimeLimitChange={setTimeLimit}
-                   pythonSolverAvailable={pythonSolverAvailable}
-                   isCalculating={isCalculating}
-                   elapsedTime={elapsedTime}
-                   error={error}
-                 />
+                    sellableItems={sellableItems}
+                    craftedItems={craftedItems}
+                    rawResources={rawResources}
+                    onCalculate={handleCalculate}
+                    solverType={solverType}
+                    onSolverTypeChange={setSolverType}
+                    timeLimit={timeLimit}
+                    onTimeLimitChange={setTimeLimit}
+                    pythonSolverAvailable={pythonSolverAvailable}
+                    isCalculating={isCalculating}
+                    elapsedTime={elapsedTime}
+                    error={error}
+                  />
 
 
               </>

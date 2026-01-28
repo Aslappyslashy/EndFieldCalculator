@@ -28,6 +28,7 @@ import type {
   OptimizationMode
 } from './types';
 import './App.css';
+import './Splash.css'; // Add splash styles
 
 type Tab = 'calculator' | 'zones' | 'items' | 'machines' | 'recipes' | 'optimizer';
 
@@ -38,6 +39,33 @@ function App() {
   const { zones } = useZones();
   const [activeTab, setActiveTab] = useState<Tab>('calculator');
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+
+  // Intro State
+  const [showSplash, setShowSplash] = useState(true);
+  const [showUI, setShowUI] = useState(false);
+
+  // Splash Sequence
+  useEffect(() => {
+    // 1. Background wipe (handled in AdvancedBackground) starts at t=0
+    
+    // 2. Show Logo at t=0 (it has animation delay in CSS if needed, or JS control)
+    // CSS for .splash-logo handles the fadeIn -> fadeOut sequence
+    
+    // 3. Fade in UI after logo fades out
+    const uiTimer = setTimeout(() => {
+        setShowUI(true);
+    }, 1100); // Sync with CSS animations (halved)
+
+    const removeSplashTimer = setTimeout(() => {
+        setShowSplash(false);
+    }, 1800); // Clean up DOM (halved)
+
+    return () => {
+        clearTimeout(uiTimer);
+        clearTimeout(removeSplashTimer);
+    };
+  }, []);
+
 
   // Lifted Calculator state
   const scenarioHook = useScenarios();
@@ -101,7 +129,14 @@ function App() {
   return (
     <div className={`app ${sidebarCollapsed ? 'sidebar-collapsed' : ''}`}>
       <AdvancedBackground />
+      
+      {showSplash && (
+          <div className="splash-logo-container">
+              <div className="splash-logo">ENDFIELD</div>
+          </div>
+      )}
 
+      {showUI && (
       <div className="app-container">
         <aside className="sidebar">
           <div className="sidebar-header">
@@ -254,6 +289,7 @@ function App() {
           </div>
         </main>
       </div>
+      )}
     </div>
   );
 }

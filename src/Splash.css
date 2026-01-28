@@ -1,0 +1,62 @@
+.splash-logo-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 5000;
+}
+
+.splash-logo {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 5rem;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: 0.5em;
+  opacity: 0;
+  transform: scale(0.95);
+  animation: splashLogo 1.25s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+@keyframes splashLogo {
+  0% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  20% {
+    opacity: 1;
+    transform: scale(1);
+    text-shadow: 0 0 30px rgba(230, 194, 0, 0.5);
+  }
+  80% {
+    opacity: 1;
+    transform: scale(1.05);
+    filter: blur(0px);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.1);
+    filter: blur(10px);
+  }
+}
+
+.app-container {
+  opacity: 0;
+  animation: fadeInUI 0.5s ease-out forwards;
+  animation-delay: 1.1s; /* Wait for splash logo */
+}
+
+@keyframes fadeInUI {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

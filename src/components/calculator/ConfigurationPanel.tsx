@@ -60,229 +60,210 @@ export function ConfigurationPanel({
 
   return (
     <div className="calculator-config-details">
-      <div className="config-grid-v2">
-        <section className="calculator-section">
-          <h3>优化策略模式</h3>
-          <div className="radio-group vertical">
-            <label className={optimizationMode === 'maxIncome' ? 'selected' : ''}>
-              <input
-                type="radio"
-                checked={optimizationMode === 'maxIncome'}
-                onChange={() => onOptimizationModeChange('maxIncome')}
-              />
-              <div className="option-content">
-                <TrendingUp size={16} className="text-accent" />
-                <span className="radio-label">产值最大化 (Ignore Port Pressure)</span>
-              </div>
-            </label>
-            <label className={optimizationMode === 'balanced' ? 'selected' : ''}>
-              <input
-                type="radio"
-                checked={optimizationMode === 'balanced'}
-                onChange={() => onOptimizationModeChange('balanced')}
-              />
-              <div className="option-content">
-                <Scale size={16} className="text-accent" />
-                <span className="radio-label">平衡模式 (Balanced)</span>
-              </div>
-            </label>
-            <label className={optimizationMode === 'minTransfers' ? 'selected' : ''}>
-              <input
-                type="radio"
-                checked={optimizationMode === 'minTransfers'}
-                onChange={() => onOptimizationModeChange('minTransfers')}
-              />
-              <div className="option-content">
-                <Zap size={16} className="text-accent" />
-                <span className="radio-label">链路精简 (Min Logistics)</span>
-              </div>
-            </label>
+      
+      {/* 1. Top Control Bar: Mode & Solver */}
+      <div className="config-top-bar">
+        <div className="mode-selector-group">
+          <label className="section-label">优化目标</label>
+          <div className="mode-tabs">
+            <button
+              className={`mode-tab ${optimizationMode === 'maxIncome' ? 'active' : ''}`}
+              onClick={() => onOptimizationModeChange('maxIncome')}
+              title="忽略端口压力，追求理论最大产值"
+            >
+              <TrendingUp size={14} />
+              <span>产值最大化</span>
+            </button>
+            <button
+              className={`mode-tab ${optimizationMode === 'balanced' ? 'active' : ''}`}
+              onClick={() => onOptimizationModeChange('balanced')}
+              title="平衡产值与物流复杂度"
+            >
+              <Scale size={14} />
+              <span>平衡模式</span>
+            </button>
+            <button
+              className={`mode-tab ${optimizationMode === 'minTransfers' ? 'active' : ''}`}
+              onClick={() => onOptimizationModeChange('minTransfers')}
+              title="最少跨区传输，简化物流"
+            >
+              <Zap size={14} />
+              <span>链路精简</span>
+            </button>
           </div>
+        </div>
 
-          {optimizationMode === 'balanced' && (
-            <div className="penalty-control-v2">
-              <label>传输惩罚系数: {transferPenalty.toFixed(2)}</label>
-              <input
-                type="range"
-                min="0"
-                max="1"
-                step="0.05"
-                value={transferPenalty}
-                onChange={(e) => onTransferPenaltyChange(parseFloat(e.target.value))}
-              />
-            </div>
-          )}
-
-          <div className="penalty-control-v2 mt-2">
-            <label title="加强此系数可以减少同种机器分散在多个地块的情况">
-              产线聚合权重: {consolidationWeight.toFixed(2)}
-            </label>
-            <input
-              type="range"
-              min="0"
-              max="1"
-              step="0.01"
-              value={consolidationWeight}
-              onChange={(e) => onConsolidationWeightChange(parseFloat(e.target.value))}
-            />
-          </div>
-
-          <div className="penalty-control-v2 mt-2">
-            <label title="加强此系数可以尽可能减少总机器数量（倾向于跑满已有的机器）">
-              整数倾向权重: {machineWeight.toFixed(2)}
-            </label>
-            <input
-              type="range"
-              min="0"
-              max="1"
-              step="0.005"
-              value={machineWeight}
-              onChange={(e) => onMachineWeightChange(parseFloat(e.target.value))}
-            />
-          </div>
-
-          <div className="penalty-control-v2 mt-2">
-            <label title="设置求解器最大运行时间">
-              求解时限 (Time Limit): {timeLimit}s
-            </label>
-            <input
-              type="range"
-              min="5"
-              max="120"
-              step="5"
-              value={timeLimit}
-              onChange={(e) => onTimeLimitChange(parseInt(e.target.value))}
-            />
-          </div>
-
-          <div className="penalty-control-v2 mt-3">
-
-            <label className="flex justify-between items-center">
-              <span>求解器内核 (Solver Core)</span>
-              {solverType === 'python' && (
-                <span className={`text-[10px] px-1 rounded ${pythonSolverAvailable === true ? 'bg-success/20 text-success' : (pythonSolverAvailable === false ? 'bg-error/20 text-error' : 'bg-white/10 text-white/50')}`}>
-                  {pythonSolverAvailable === true ? '● ONLINE' : (pythonSolverAvailable === false ? '● OFFLINE' : '○ CHECKING')}
-                </span>
-              )}
-            </label>
-            <div className="flex gap-2 mt-1">
-              <button
-                className={`btn btn-small flex-1 ${solverType === 'current' ? 'btn-primary' : 'btn-secondary'}`}
-                onClick={() => onSolverTypeChange('current')}
-              >
-                内置 (WASM)
-              </button>
-              <button
-                className={`btn btn-small flex-1 ${solverType === 'python' ? 'btn-primary' : 'btn-secondary'}`}
-                onClick={() => onSolverTypeChange('python')}
-              >
-                Python (FastAPI) RECOMANDED
-              </button>
-            </div>
-            {solverType === 'python' && pythonSolverAvailable === false && (
-              <p className="text-[10px] text-error mt-1 opacity-80">
-                后端服务未启动。请运行 <code>npm run backend</code>
-              </p>
+        <div className="solver-selector-group">
+          <label className="section-label">
+            <span>求解核心</span>
+            {solverType === 'python' && (
+              <span className={`status-dot ${pythonSolverAvailable === true ? 'online' : 'offline'}`} />
             )}
+          </label>
+          <div className="solver-tabs">
+            <button
+              className={`solver-tab ${solverType === 'current' ? 'active' : ''}`}
+              onClick={() => onSolverTypeChange('current')}
+            >
+              WASM
+            </button>
+            <button
+              className={`solver-tab ${solverType === 'python' ? 'active' : ''}`}
+              onClick={() => onSolverTypeChange('python')}
+            >
+              Python
+            </button>
           </div>
-        </section>
+        </div>
+      </div>
 
-
-        <section className="calculator-section">
-          <h3>预期产出目标</h3>
-          <div className="target-list">
+      {/* 2. Main Config Grid: Targets vs Parameters */}
+      <div className="config-main-layout">
+        
+        {/* Left Column: Targets (Primary Input) */}
+        <section className="calculator-section section-targets">
+          <div className="section-header">
+            <h3>预期产出目标</h3>
+            <button
+              onClick={onAddTarget}
+              className="btn-icon-text text-accent"
+            >
+              <Plus size={14} /> 添加
+            </button>
+          </div>
+          
+          <div className="target-list-scroll">
+            {targets.length === 0 && (
+              <div className="empty-placeholder">暂无目标，请添加产物</div>
+            )}
             {targets.map((target, index) => (
-              <div key={index} className="input-row compact">
+              <div key={index} className="target-row">
                 <select
                   value={target.itemId}
                   onChange={(e) => onUpdateTarget(index, 'itemId', e.target.value)}
+                  className="item-select"
                 >
                   <optgroup label="可出售产物">
-                    {sellableItems.map((i) => (
-                      <option key={i.id} value={i.id}>
-                        {i.name}
-                      </option>
-                    ))}
+                    {sellableItems.map((i) => <option key={i.id} value={i.id}>{i.name}</option>)}
                   </optgroup>
                   <optgroup label="中间产物">
-                    {craftedItems
-                      .filter((i) => i.price === 0)
-                      .map((i) => (
-                        <option key={i.id} value={i.id}>
-                          {i.name}
-                        </option>
-                      ))}
+                    {craftedItems.filter((i) => i.price === 0).map((i) => <option key={i.id} value={i.id}>{i.name}</option>)}
                   </optgroup>
                 </select>
-                <input
-                  type="number"
-                  step="0.1"
-                  value={target.targetRate}
-                  onChange={(e) => onUpdateTarget(index, 'targetRate', e.target.value)}
-                />
-                <span className="unit">/min</span>
+                <div className="rate-input-wrapper">
+                  <input
+                    type="number"
+                    step="0.1"
+                    value={target.targetRate}
+                    onChange={(e) => onUpdateTarget(index, 'targetRate', e.target.value)}
+                  />
+                  <span className="unit">/min</span>
+                </div>
                 <button
                   onClick={() => onRemoveTarget(index)}
-                  className="btn btn-icon btn-danger"
+                  className="btn-remove"
                 >
                   <X size={14} />
                 </button>
               </div>
             ))}
-            <button
-              onClick={onAddTarget}
-              className="btn btn-small btn-all btn-primary flex items-center justify-center gap-1"
-            >
-              <Plus size={14} /> 添加目标产物
-            </button>
           </div>
         </section>
 
-        <section className="calculator-section">
-          <h3>全局资源限制</h3>
-          <div className="resource-constraints-v2">
-            {effectiveConstraints.map((constraint, index) => {
-              const resource = rawResources.find((r) => r.id === constraint.itemId);
-              return (
-                <div key={constraint.itemId} className="resource-field">
-                  <label>{resource?.name}</label>
-                  <div className="input-group">
+        {/* Right Column: Constraints & Advanced Params */}
+        <div className="config-right-col">
+          
+          {/* Advanced Parameters (Compact) */}
+          <section className="calculator-section section-params">
+            <h3>算法参数微调</h3>
+            <div className="params-grid">
+              
+              {optimizationMode === 'balanced' && (
+                <div className="param-item">
+                  <label>传输惩罚: {transferPenalty.toFixed(2)}</label>
+                  <input
+                    type="range" min="0" max="1" step="0.05"
+                    value={transferPenalty}
+                    onChange={(e) => onTransferPenaltyChange(parseFloat(e.target.value))}
+                  />
+                </div>
+              )}
+
+              <div className="param-item">
+                <label>产线聚合: {consolidationWeight.toFixed(2)}</label>
+                <input
+                  type="range" min="0" max="1" step="0.01"
+                  value={consolidationWeight}
+                  onChange={(e) => onConsolidationWeightChange(parseFloat(e.target.value))}
+                />
+              </div>
+
+              <div className="param-item">
+                <label>整数倾向: {machineWeight.toFixed(2)}</label>
+                <input
+                  type="range" min="0" max="1" step="0.005"
+                  value={machineWeight}
+                  onChange={(e) => onMachineWeightChange(parseFloat(e.target.value))}
+                />
+              </div>
+
+              <div className="param-item">
+                <label>求解时限: {timeLimit}s</label>
+                <input
+                  type="range" min="5" max="120" step="5"
+                  value={timeLimit}
+                  onChange={(e) => onTimeLimitChange(parseInt(e.target.value))}
+                />
+              </div>
+            </div>
+          </section>
+
+          {/* Resource Constraints (Grid) */}
+          <section className="calculator-section section-constraints">
+            <h3>全局资源限制</h3>
+            <div className="constraints-grid">
+              {effectiveConstraints.map((constraint, index) => {
+                const resource = rawResources.find((r) => r.id === constraint.itemId);
+                return (
+                  <div key={constraint.itemId} className="constraint-item">
+                    <label>{resource?.name}</label>
                     <input
                       type="number"
                       value={constraint.maxRate}
                       onChange={(e) => onUpdateConstraint(index, e.target.value)}
                     />
-                    <span>/min</span>
                   </div>
-                </div>
-              );
-            })}
-          </div>
-        </section>
+                );
+              })}
+            </div>
+          </section>
+
+        </div>
       </div>
 
-      <div className="action-bar-v2">
+      {/* 3. Action Bar (Sticky Bottom) */}
+      <div className="action-bar-compact">
         <button
           onClick={onCalculate}
           disabled={isCalculating}
-          className={`btn btn-primary btn-large btn-full flex items-center justify-center gap-2 ${isCalculating ? 'opacity-50 cursor-not-allowed' : ''}`}
+          className={`btn-calculate ${isCalculating ? 'calculating' : ''}`}
         >
           {isCalculating ? (
             <>
-              <div className="w-4 h-4 border-2 border-accent border-t-transparent rounded-full animate-spin"></div>
-              <span>算法运行中... ({elapsedTime?.toFixed(1)}s)</span>
+              <div className="spinner-sm"></div>
+              <span>计算中 ({elapsedTime?.toFixed(1)}s)</span>
             </>
           ) : (
-
             <>
-              <TrendingUp size={20} />
-              <span>生成工业布局方案</span>
+              <TrendingUp size={18} />
+              <span>生成方案</span>
             </>
           )}
         </button>
-        {error && <div className="error-message">{error}</div>}
+        {error && <div className="error-toast">{error}</div>}
       </div>
 
     </div>
   );
 }
+
