@@ -13,15 +13,15 @@
 
 ---
 
-### 📖 Introduction
+### Introduction
 A specialized visual planning and optimization tool for the Endfield industrial system. Design complex factory layouts with drag-and-drop nodes and optimize resource allocation using our advanced algorithmic engine.
 
-### ✨ Key Features
+### Key Features
 - **Visual Blueprint Designer:** Drag-and-drop nodes to create and manage your factory layout intuitively.
 - **Intelligent Optimization:** Automatically calculate the most profitable production ratios based on global resource constraints.
 - **Cross-Platform:** Fully compatible with Windows, macOS, and Linux.
 
-### 🧠 Algorithm Logic
+### Algorithm Logic
 This project uses **Mixed-Integer Linear Programming (MILP)** for global optimization.
 *For detailed mathematical models, see [PLAN.md](PLAN.md)*
 
@@ -35,14 +35,14 @@ This project uses **Mixed-Integer Linear Programming (MILP)** for global optimiz
     *   Maximize **Net Profit** (Sales Value - Transport Cost).
     *   Includes **Recipe Activation Penalty** (encourages specialization) and **Machine Count Penalty** (encourages efficiency).
 
-### 🖼️ Interface Showcase
+### Interface Showcase
 <div align="center">
   <img src="img/demo1.png" alt="Dashboard Showcase" width="100%" style="border-radius: 8px; border: 1px solid #333;" />
 </div>
 
 ---
 
-### 🚀 Quick Start
+### Quick Start
 
 #### 1. Prerequisites
 Ensure you have the following installed:
@@ -91,15 +91,14 @@ npm run dev
 *(Access at: http://localhost:5173)*
 
 ---
-
-### ⚙️ Usage
+### Usage
 1.  Open your browser to `http://localhost:5173`.
 2.  Click the **Settings (⚙️)** icon.
 3.  **Select Solver**:
     *   `Built-in (WASM)`: Lightweight, for basic calculations (No backend required).
     *   `Python (FastAPI)`: Recommended for complex multi-zone optimization (Requires backend).
 
-### 🛠️ Tech Stack
+### Tech Stack
 - **Frontend:** React, Vite (SWC/Babel), TypeScript
 - **Backend:** Python, FastAPI, PuLP (Optimization)
 - **UI Theme:** Industrial Sci-Fi (Dark Mode)
