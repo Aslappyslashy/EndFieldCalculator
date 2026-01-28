@@ -1,93 +1,80 @@
 ## Endfield Industrial Calculator
 
-### Solvers
-- **Built-in (WASM):** Runs directly in your browser using `javascript-lp-solver`. No setup required.
-- **Python (FastAPI):** Uses a MILP model with `PuLP` and `CBC`. Requires a Python environment.
+### Features
+- **Visual Production Flow:** Drag-and-drop nodes to design your factory layout.
+- **Global Resource Management:** Set limits on raw resources and optimize for maximum profit.
+- **Multi-Platform:** Fully compatible with Windows, macOS, and Linux.
 
-To use the Python solver:
-1. Run the install script for your platform:
-   - Windows: `install.bat`
-   - Linux/macOS: `bash install.sh`
-2. Start the backend: `npm run backend` (or `python main.py`)
-3. Select "Python (FastAPI)" in the calculator settings.
+---
 
-### Deployment & Setup
-- **Install:** Installs all Node.js and Python dependencies.
-  - `install.bat` (Windows)
-  - `install.sh` (Linux/macOS)
-- **Setup:** Ensures dependencies are installed and builds the frontend.
-  - `setup.bat` (Windows)
-  - `setup.sh` (Linux/macOS)
-- **Deploy:** Performs a full installation and production build.
-  - `deploy.bat` (Windows)
-  - `deploy.sh` (Linux/macOS)
+###  Setup Instructions
+
+#### Prerequisites
+1.  **Node.js:** (v18 or higher) [Download here](https://nodejs.org/)
+2.  **Python:** (v3.13 or higher) [Download here](https://www.python.org/)
+3.  **Git:** (Optional) To clone the repository.
+
+#### 1. Installation
+Run the install script for your specific operating system to download dependencies and create a Python virtual environment.
+
+*   **Windows:**
+    ```cmd
+    install.bat
+    ```
+*   **Linux / macOS:**
+    ```bash
+    chmod +x *.sh
+    ./install.sh
+    ```
+
+#### 2. Building the Frontend
+To compile the React application into optimized static files for deployment:
+
+*   **Windows:**
+    ```cmd
+    setup.bat
+    ```
+*   **Linux / macOS:**
+    ```bash
+    ./setup.sh
+    ```
+
+#### 3. Running the Application
+You need to run both the **Backend** (for the advanced solver) and the **Frontend**.
+
+**1. Start the Backend Solver:**
+*   **Windows:**
+    ```cmd
+    venv\Scripts\activate
+    python main.py
+    ```
+*   **Linux / macOS:**
+    ```bash
+    source venv/bin/activate
+    python main.py
+    ```
+*(The backend will run on `http://localhost:8000`) configurable in main.py* 
+
+**2. Start the Frontend:**
+Open a new terminal and run:
+```bash
+npm run dev
+```
+*(The frontend will be available at `http://localhost:5173`)*
+
+#### 4. Usage in Browser
+1.  Open your browser to the frontend URL.
+2.  Go to **Settings** (Gear icon).
+3.  Under **Solver Type**, select:
+    *   `Built-in (WASM)` for basic calculations without the backend, but often fail to solve.
+    *   `Python (FastAPI)` for complex multi-zone optimization (requires backend to be running).
+
+---
+
+###  Solvers Details
 
 Currently, two official plugins are available:
 
 - [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
 - [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```

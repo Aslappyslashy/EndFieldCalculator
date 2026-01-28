@@ -108,8 +108,8 @@ export function buildZoneFlowGraphForZone(params: {
       id,
       type: 'recipe',
       zoneId: zr.zone.id,
-      label: `${getMachineName(recipe!.machineId)} x${a.machineCount}`,
-      sublabel: `${getRecipeName(a.recipeId)} (${a.actualRate.toFixed(1)}/m) | util ${a.utilization.toFixed(2)}/${a.machineCount}`,
+      label: `${getRecipeName(a.recipeId)}`,
+      sublabel: `${getMachineName(recipe!.machineId)} x${a.machineCount} | Util: ${a.utilization.toFixed(2)}`,
     });
   }
 

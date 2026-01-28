@@ -14,7 +14,7 @@ export function MachineManager() {
         <h2>工业设备库</h2>
       </div>
 
-      <div className="table-container">
+      <div className="table-container" style={{ overflowY: 'auto', maxHeight: 'calc(100vh - 200px)' }}>
         <table>
           <thead>
             <tr>

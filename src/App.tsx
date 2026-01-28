@@ -106,7 +106,7 @@ function App() {
         <aside className="sidebar">
           <div className="sidebar-header">
             <div className="logo">{sidebarCollapsed ? 'EF' : 'ENDFIELD'}</div>
-            {!sidebarCollapsed && <div className="sub-logo">终末地工业专家系统</div>}
+            {!sidebarCollapsed && <div className="sub-logo">终末地集成工业优化设计</div>}
             <button
               className="sidebar-toggle"
               onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
@@ -166,10 +166,10 @@ function App() {
               <button
                 className={`nav-item ${activeTab === 'optimizer' ? 'active' : ''}`}
                 onClick={() => setActiveTab('optimizer')}
-                title="优化流水流水线"
+                title="DEBUG"
               >
                 <Activity size={20} className={`nav-icon ${isOptimizerCalculating ? 'text-accent animate-pulse' : ''}`} />
-                {!sidebarCollapsed && <span className="nav-text">优化流水流水线</span>}
+                {!sidebarCollapsed && <span className="nav-text">DEBUG</span>}
                 {isOptimizerCalculating && !sidebarCollapsed && (
                    <span className="ml-auto text-[10px] bg-accent/20 text-accent px-1 rounded animate-pulse">RUNNING</span>
                 )}

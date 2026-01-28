@@ -1,5 +1,5 @@
 import { useMemo, useState, useRef, useEffect, useCallback } from 'react';
-import type { ZoneResult, Recipe, Item, CalculatorResult } from '../types';
+import type { ZoneResult, Recipe, Item, CalculatorResult, Machine } from '../types';
 import { ArrowUpRight, DollarSign, AlertTriangle, GripHorizontal, Globe, MapPin, TrendingUp, Zap } from 'lucide-react';
 import { getInputRatePerMinute } from '../utils/zoneCalculator';
 
@@ -8,9 +8,10 @@ interface ZoneStatisticsPanelProps {
     fullResult: CalculatorResult | null;
     recipes: Recipe[];
     items: Item[];
+    machines: Machine[];
 }
 
-export function ZoneStatisticsPanel({ zoneResult, fullResult, recipes, items }: ZoneStatisticsPanelProps) {
+export function ZoneStatisticsPanel({ zoneResult, fullResult, recipes, items, machines }: ZoneStatisticsPanelProps) {
     // Mode: local (current zone) or global (all zones combined)
     const [viewMode, setViewMode] = useState<'local' | 'global'>('local');
 
@@ -187,15 +188,18 @@ export function ZoneStatisticsPanel({ zoneResult, fullResult, recipes, items }: 
             zr.assignments.forEach(a => {
                 const recipe = recipes?.find(r => r.id === a.recipeId);
                 if (!recipe) return;
-                const mName = recipe.machineId; // Or get proper name
+                
+                // Get machine name instead of ID
+                const machine = machines?.find(m => m.id === recipe.machineId) || { name: recipe.machineId };
+                const mName = machine.name;
                 counts.set(mName, (counts.get(mName) || 0) + a.machineCount);
             });
         });
 
         return Array.from(counts.entries())
-            .map(([id, count]) => ({ id, count }))
+            .map(([name, count]) => ({ name, count }))
             .sort((a, b) => b.count - a.count);
-    }, [zoneResult, fullResult, viewMode, recipes]);
+    }, [zoneResult, fullResult, viewMode, recipes, machines]);
 
     const activeTitle = viewMode === 'global' ? '全局统计' : (zoneResult?.zone.name || '未知地块');
 
@@ -235,10 +239,10 @@ export function ZoneStatisticsPanel({ zoneResult, fullResult, recipes, items }: 
                     </div>
                 </div>
 
-                <div className="machine-summary-header mt-3 flex flex-wrap gap-2">
+                <div className="machine-summary-header mt-3 flex flex-wrap gap-2 max-h-32 overflow-y-auto pr-1">
                     {machineCounts.map(m => (
-                        <div key={m.id} className="text-[10px] bg-white/5 border border-white/10 px-2 py-0.5 rounded flex items-center gap-2">
-                            <span className="text-dim uppercase tracking-tighter">{m.id.replace('machine_', '')}</span>
+                        <div key={m.name} className="text-[10px] bg-white/5 border border-white/10 px-2 py-0.5 rounded flex items-center gap-2 whitespace-nowrap">
+                            <span className="text-dim uppercase tracking-tighter">{m.name}</span>
                             <span className="text-accent font-bold">x{m.count}</span>
                         </div>
                     ))}

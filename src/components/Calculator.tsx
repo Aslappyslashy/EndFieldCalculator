@@ -20,8 +20,10 @@ import { ScenarioToolbar } from './calculator/ScenarioToolbar';
 import { ConfigurationPanel } from './calculator/ConfigurationPanel';
 import { ZoneNavigator } from './calculator/ZoneNavigator';
 import { ZoneReportView } from './calculator/ZoneReportView';
+import { ErrorBoundary } from './ErrorBoundary';
 
  interface CalculatorProps {
+
    // Config State
    targets: ProductionTarget[];
    setTargets: (t: ProductionTarget[]) => void;
@@ -467,22 +469,34 @@ import { ZoneReportView } from './calculator/ZoneReportView';
               if (!zoneResult) return <div className="empty-state">方案计算完成后可在此查看区域详情</div>;
 
               return (
-                <ZoneReportView
-                  zoneResult={zoneResult}
-                  result={result!}
-                  recipes={recipes}
-                  itemNameById={itemNameById}
-                  recipeNameById={recipeNameById}
-                  machineNameById={machineNameById}
-                  nodePositions={nodePositions}
-                  onLayoutChange={(newPos) => {
-                    if (Object.keys(newPos).length === 0) {
-                      setNodePositions({});
-                    } else {
-                      setNodePositions(prev => ({ ...prev, ...newPos }));
-                    }
-                  }}
-                />
+                <ErrorBoundary
+                  fallback={
+                    <div className="p-4 bg-red-900/50 border border-red-500 rounded text-red-200">
+                      <h3 className="font-bold">Error loading zone details</h3>
+                      <p>Something went wrong while rendering this view. Please try selecting another zone or recalculating.</p>
+                      <button className="btn btn-secondary mt-2" onClick={() => setSelectedZoneId('config')}>
+                        Return to Configuration
+                      </button>
+                    </div>
+                  }
+                >
+                  <ZoneReportView
+                    zoneResult={zoneResult}
+                    result={result!}
+                    recipes={recipes}
+                    itemNameById={itemNameById}
+                    recipeNameById={recipeNameById}
+                    machineNameById={machineNameById}
+                    nodePositions={nodePositions}
+                    onLayoutChange={(newPos) => {
+                      if (Object.keys(newPos).length === 0) {
+                        setNodePositions({});
+                      } else {
+                        setNodePositions(prev => ({ ...prev, ...newPos }));
+                      }
+                    }}
+                  />
+                </ErrorBoundary>
               );
             })()}
           </main>
@@ -495,9 +509,11 @@ import { ZoneReportView } from './calculator/ZoneReportView';
               fullResult={result}
               recipes={recipes}
               items={items}
+              machines={machines}
             />
           </div>
         )}
+
       </div>
 
       {isScenarioManagerOpen && (
